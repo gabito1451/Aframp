@@ -109,7 +109,7 @@ We strive to maintain a respectful and inclusive environment. Please be construc
     *   [Stellar Ecosystem Proposals (SEPs)](#)
     *   [Anchor Platform Guide](#)
 *   **AFRAMP Backend Repository**: [Link to backend service repo]
-*   **Live Application**: [https://app.aframp.com](#)
+*   **Live Application**: [https://app.aframp.com](https://aframp.vercel.app/)
 *   **Verification Portal**: [https://verify.aframp.com](#) *(Live transaction explorer)*
 *   **Open an Issue**: Use GitHub Issues to report bugs or request features.
 
