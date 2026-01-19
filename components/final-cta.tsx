@@ -1,13 +1,16 @@
 "use client"
 
+import { useState } from "react"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Wallet, Coins } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { WalletConnectModal } from "@/components/wallet-connect-modal"
 
 export function FinalCTA() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const [walletModalOpen, setWalletModalOpen] = useState(false)
 
   return (
     <section className="py-24 px-4 bg-muted/30">
@@ -32,17 +35,20 @@ export function FinalCTA() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button
             size="lg"
+            onClick={() => setWalletModalOpen(true)}
             className="shimmer-btn bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 h-14 text-base font-medium shadow-lg shadow-primary/20"
           >
-            Create Free Account
-            <ArrowRight className="ml-2 w-5 h-5" />
+            <Wallet className="mr-2 w-5 h-5" />
+            Connect Wallet
           </Button>
+          <WalletConnectModal open={walletModalOpen} onOpenChange={setWalletModalOpen} />
           <Button
             variant="outline"
             size="lg"
             className="rounded-full px-8 h-14 text-base font-medium border-border text-foreground hover:bg-muted bg-transparent"
           >
-            Talk to Sales
+            <Coins className="mr-2 w-5 h-5" />
+            Mint NFT
           </Button>
         </div>
 

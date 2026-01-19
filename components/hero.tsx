@@ -1,8 +1,10 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
-import { ArrowRight, Wallet, CreditCard, TrendingUp } from "lucide-react"
+import { ArrowRight, Wallet, CreditCard, TrendingUp, Zap, Coins } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { WalletConnectModal } from "@/components/wallet-connect-modal"
 
 const textRevealVariants = {
   hidden: { y: "100%" },
@@ -17,6 +19,8 @@ const textRevealVariants = {
 }
 
 export function Hero() {
+  const [walletModalOpen, setWalletModalOpen] = useState(false)
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-24 pb-16 overflow-hidden">
       {/* Subtle background pattern */}
@@ -87,17 +91,20 @@ export function Hero() {
             >
               <Button
                 size="lg"
+                onClick={() => setWalletModalOpen(true)}
                 className="shimmer-btn bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 h-14 text-base font-medium shadow-lg shadow-primary/20"
               >
-                Start Trading
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <Wallet className="mr-2 w-5 h-5" />
+                Connect Wallet
               </Button>
+              <WalletConnectModal open={walletModalOpen} onOpenChange={setWalletModalOpen} />
               <Button
                 variant="outline"
                 size="lg"
                 className="rounded-full px-8 h-14 text-base font-medium border-border text-foreground hover:bg-muted bg-transparent"
               >
-                For Business
+                <Zap className="mr-2 w-5 h-5" />
+                Swap Tokens
               </Button>
             </motion.div>
 
