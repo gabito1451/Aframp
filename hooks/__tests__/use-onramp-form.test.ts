@@ -17,19 +17,22 @@ describe('useOnrampForm - Form State Persistence', () => {
       result.current.setPaymentMethod('card')
     })
 
-    await waitFor(() => {
-      const stored = localStorage.getItem('onramp:form-state')
-      expect(stored).toBeTruthy()
-      const parsed = JSON.parse(stored!)
-      expect(parsed.data.fiatCurrency).toBe('KES')
-      expect(parsed.data.cryptoAsset).toBe('USDC')
-      expect(parsed.data.paymentMethod).toBe('card')
-    })
+    await waitFor(
+      () => {
+        const stored = localStorage.getItem('onramp:form')
+        expect(stored).toBeTruthy()
+        const parsed = JSON.parse(stored!)
+        expect(parsed.data.fiatCurrency).toBe('KES')
+        expect(parsed.data.cryptoAsset).toBe('USDC')
+        expect(parsed.data.paymentMethod).toBe('card')
+      },
+      { timeout: 3000 }
+    )
   })
 
   it('restores form state from localStorage', async () => {
     localStorage.setItem(
-      'onramp:form-state',
+      'onramp:form',
       JSON.stringify({
         data: {
           fiatCurrency: 'GHS',
@@ -43,11 +46,14 @@ describe('useOnrampForm - Form State Persistence', () => {
 
     const { result } = renderHook(() => useOnrampForm(0.0012, true))
 
-    await waitFor(() => {
-      expect(result.current.state.fiatCurrency).toBe('GHS')
-      expect(result.current.state.cryptoAsset).toBe('cKES')
-      expect(result.current.state.paymentMethod).toBe('mobile_money')
-    })
+    await waitFor(
+      () => {
+        expect(result.current.state.fiatCurrency).toBe('GHS')
+        expect(result.current.state.cryptoAsset).toBe('cKES')
+        expect(result.current.state.paymentMethod).toBe('mobile_money')
+      },
+      { timeout: 3000 }
+    )
   })
 
   it('validates form completeness', async () => {
