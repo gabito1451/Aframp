@@ -1,8 +1,17 @@
-"use client"
+'use client'
 
-import { motion, useInView } from "framer-motion"
-import { useRef, useEffect, useState } from "react"
-import { Wallet, CreditCard, Building2, Zap, Shield, Globe, TrendingUp, TrendingDown } from "lucide-react"
+import { motion, useInView } from 'framer-motion'
+import { useRef, useEffect, useState } from 'react'
+import {
+  Wallet,
+  CreditCard,
+  Building2,
+  Zap,
+  Shield,
+  Globe,
+  TrendingUp,
+  TrendingDown,
+} from 'lucide-react'
 
 const containerVariants = {
   hidden: {},
@@ -20,7 +29,7 @@ const itemVariants = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
+      ease: 'easeOut' as const,
     },
   },
 }
@@ -56,7 +65,7 @@ function LiveRate() {
   }, []) // Empty dependency array - runs once on mount
 
   const trend = prevRate !== null && rate !== null ? rate - prevRate : 0
-  const trendColor = trend >= 0 ? "text-green-500" : "text-red-500"
+  const trendColor = trend >= 0 ? 'text-green-500' : 'text-red-500'
 
   if (loading) {
     return (
@@ -75,7 +84,11 @@ function LiveRate() {
           <span className="text-lg font-bold text-primary">₦{rate?.toFixed(4)}</span>
           {trend !== 0 && (
             <span className={`flex items-center ${trendColor}`}>
-              {trend >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+              {trend >= 0 ? (
+                <TrendingUp className="w-4 h-4" />
+              ) : (
+                <TrendingDown className="w-4 h-4" />
+              )}
             </span>
           )}
         </div>
@@ -94,9 +107,9 @@ function LiveRate() {
 
 function TransactionFeed() {
   const transactions = [
-    { type: "BTC Buy", amount: "₦50,000", status: "success" },
-    { type: "Bill Pay", amount: "₦15,000", status: "success" },
-    { type: "ETH Sell", amount: "₦120,000", status: "success" },
+    { type: 'BTC Buy', amount: '₦50,000', status: 'success' },
+    { type: 'Bill Pay', amount: '₦15,000', status: 'success' },
+    { type: 'ETH Sell', amount: '₦120,000', status: 'success' },
   ]
 
   return (
@@ -122,7 +135,7 @@ function TransactionFeed() {
 
 export function BentoGrid() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section id="features" className="py-24 px-4">
@@ -135,12 +148,13 @@ export function BentoGrid() {
         >
           <h2
             className="text-3xl sm:text-4xl font-bold text-foreground mb-4"
-            style={{ fontFamily: "var(--font-display)" }}
+            style={{ fontFamily: 'var(--font-display)' }}
           >
             Everything you need to transact
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            From buying your first crypto to running a business on cNGN. Built for Africa, by Africans.
+            From buying your first crypto to running a business on cNGN. Built for Africa, by
+            Africans.
           </p>
         </motion.div>
 
@@ -148,7 +162,7 @@ export function BentoGrid() {
           ref={ref}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          animate={isInView ? 'visible' : 'hidden'}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         >
           {/* Large card - Buy Crypto */}
@@ -161,10 +175,12 @@ export function BentoGrid() {
                 <div className="p-3 rounded-2xl bg-primary/10 w-fit mb-4">
                   <Wallet className="w-6 h-6 text-primary" strokeWidth={1.5} />
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">Buy Crypto from ₦2,000</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  Buy Crypto from ₦2,000
+                </h3>
                 <p className="text-muted-foreground text-sm mb-4">
-                  Start your crypto journey with as little as 2,000 cNGN. Buy Bitcoin, Ethereum, and more with instant
-                  settlement.
+                  Start your crypto journey with as little as 2,000 cNGN. Buy Bitcoin, Ethereum, and
+                  more with instant settlement.
                 </p>
                 <LiveRate />
               </div>
@@ -187,8 +203,11 @@ export function BentoGrid() {
               Airtime, data, electricity, cable TV. Pay all your bills directly with cNGN.
             </p>
             <div className="flex flex-wrap gap-2">
-              {["MTN", "Airtel", "DSTV", "IKEDC"].map((bill) => (
-                <span key={bill} className="px-3 py-1 text-xs bg-muted rounded-full text-muted-foreground">
+              {['MTN', 'Airtel', 'DSTV', 'IKEDC'].map((bill) => (
+                <span
+                  key={bill}
+                  className="px-3 py-1 text-xs bg-muted rounded-full text-muted-foreground"
+                >
                   {bill}
                 </span>
               ))}
@@ -226,7 +245,7 @@ export function BentoGrid() {
               No more waiting. Receive your funds in seconds, not days.
             </p>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-2xl font-bold text-primary">{"<"}30s</span>
+              <span className="font-mono text-2xl font-bold text-primary">{'<'}30s</span>
               <span className="text-xs text-muted-foreground">avg. settlement</span>
             </div>
           </motion.div>
@@ -244,8 +263,12 @@ export function BentoGrid() {
               Your funds are protected with enterprise-level security and insurance.
             </p>
             <div className="flex items-center gap-2">
-              <span className="px-2 py-1 text-xs bg-muted rounded text-muted-foreground">CBN Licensed</span>
-              <span className="px-2 py-1 text-xs bg-muted rounded text-muted-foreground">Insured</span>
+              <span className="px-2 py-1 text-xs bg-muted rounded text-muted-foreground">
+                CBN Licensed
+              </span>
+              <span className="px-2 py-1 text-xs bg-muted rounded text-muted-foreground">
+                Insured
+              </span>
             </div>
           </motion.div>
 

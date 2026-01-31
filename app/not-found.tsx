@@ -1,4 +1,4 @@
-import ErrorLayout from '@/components/error/ErrorLayout';
+import ErrorLayout from '@/components/error/ErrorLayout'
 
 export default function NotFound() {
   return (
@@ -8,5 +8,5 @@ export default function NotFound() {
       message="The page you’re looking for doesn’t exist."
       actions={[{ label: 'Go Home', href: '/' }]}
     />
-  );
+  )
 }

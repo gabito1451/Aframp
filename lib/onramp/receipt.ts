@@ -1,4 +1,4 @@
-import { OnrampOrder } from "@/types/onramp"
+import { OnrampOrder } from '@/types/onramp'
 
 export function generateReceiptPDF(order: OnrampOrder): void {
   // Enhanced receipt data with all required fields
@@ -6,21 +6,21 @@ export function generateReceiptPDF(order: OnrampOrder): void {
     receiptNumber: `RCP-${order.id.slice(-8).toUpperCase()}`,
     date: new Date(order.completedAt || order.createdAt).toLocaleDateString(),
     orderDetails: {
-      amount: "₦50,000.00", // Using the specific example values
-      asset: "31.17 cNGN",
-      paymentMethod: order.paymentMethod.replace("_", " "),
-      exchangeRate: "1 NGN = 0.0006235 USDC",
-      processingFee: "FREE",
-      networkFee: "₦0.15",
-      totalTime: "3 minutes 42 seconds",
-      completedAt: "Jan 19, 2026 at 14:26 WAT"
+      amount: '₦50,000.00', // Using the specific example values
+      asset: '31.17 cNGN',
+      paymentMethod: order.paymentMethod.replace('_', ' '),
+      exchangeRate: '1 NGN = 0.0006235 USDC',
+      processingFee: 'FREE',
+      networkFee: '₦0.15',
+      totalTime: '3 minutes 42 seconds',
+      completedAt: 'Jan 19, 2026 at 14:26 WAT',
     },
     blockchain: {
-      transactionHash: "8f3e2d1c...9a1b0c2d",
-      walletAddress: "GAXYZ...ABC123",
-      network: "Stellar",
-      explorerUrl: "https://stellar.expert/explorer/public/tx/8f3e2d1c9a1b0c2d"
-    }
+      transactionHash: '8f3e2d1c...9a1b0c2d',
+      walletAddress: 'GAXYZ...ABC123',
+      network: 'Stellar',
+      explorerUrl: 'https://stellar.expert/explorer/public/tx/8f3e2d1c9a1b0c2d',
+    },
   }
 
   // Create comprehensive receipt content
@@ -96,21 +96,21 @@ Thank you for using AFRAMP!
   `.trim()
 
   // Create and download the receipt
-  const blob = new Blob([receiptText], { type: "text/plain;charset=utf-8" })
+  const blob = new Blob([receiptText], { type: 'text/plain;charset=utf-8' })
   const url = URL.createObjectURL(blob)
-  const a = document.createElement("a")
+  const a = document.createElement('a')
   a.href = url
   a.download = `aframp-receipt-${receiptData.receiptNumber}.txt`
-  a.style.display = "none"
+  a.style.display = 'none'
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
   URL.revokeObjectURL(url)
 
   // Log successful receipt generation for analytics
-  console.warn("Receipt generated:", {
+  console.warn('Receipt generated:', {
     receiptNumber: receiptData.receiptNumber,
     orderId: order.id,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   })
 }

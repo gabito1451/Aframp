@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 interface AmountInputProps {
   label: string
@@ -23,7 +23,7 @@ export function AmountInput({
   readOnly,
   autoFocus,
 }: AmountInputProps) {
-  const inputId = id || label.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+  const inputId = id || label.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
   return (
     <div className="space-y-2">
@@ -41,9 +41,9 @@ export function AmountInput({
         autoFocus={autoFocus}
         suppressHydrationWarning
         className={cn(
-          "h-[52px] w-full rounded-xl border bg-background px-4 py-3 text-2xl font-semibold text-right shadow-sm transition focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500",
-          readOnly ? "text-muted-foreground" : "text-foreground",
-          (error || !value) ? "border-destructive" : "border-border"
+          'h-[52px] w-full rounded-xl border bg-background px-4 py-3 text-2xl font-semibold text-right shadow-sm transition focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500',
+          readOnly ? 'text-muted-foreground' : 'text-foreground',
+          error || !value ? 'border-destructive' : 'border-border'
         )}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${inputId}-error` : undefined}

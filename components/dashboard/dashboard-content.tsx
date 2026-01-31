@@ -1,14 +1,14 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { WalletInfo } from "@/components/dashboard/wallet-info"
-import { BalanceCard } from "@/components/dashboard/balance-card"
-import { QuickActions } from "@/components/dashboard/quick-actions"
-import { TransactionHistory } from "@/components/dashboard/transaction-history"
-import { SwapModal } from "@/components/dashboard/swap-modal"
-import { SendModal } from "@/components/dashboard/send-modal"
-import { ReceiveModal } from "@/components/dashboard/receive-modal"
-import { useBalanceContext } from "@/contexts/balance-context"
+import { useState } from 'react'
+import { WalletInfo } from '@/components/dashboard/wallet-info'
+import { BalanceCard } from '@/components/dashboard/balance-card'
+import { QuickActions } from '@/components/dashboard/quick-actions'
+import { TransactionHistory } from '@/components/dashboard/transaction-history'
+import { SwapModal } from '@/components/dashboard/swap-modal'
+import { SendModal } from '@/components/dashboard/send-modal'
+import { ReceiveModal } from '@/components/dashboard/receive-modal'
+import { useBalanceContext } from '@/contexts/balance-context'
 
 interface DashboardContentProps {
   walletName: string
@@ -16,7 +16,7 @@ interface DashboardContentProps {
 }
 
 export function DashboardContent({ walletName, walletAddress }: DashboardContentProps) {
-  const [activeModal, setActiveModal] = useState<"swap" | "send" | "receive" | null>(null)
+  const [activeModal, setActiveModal] = useState<'swap' | 'send' | 'receive' | null>(null)
 
   // Get all balances with prices from context
   const { balances, totalUsdValue, lastUpdated } = useBalanceContext()
@@ -31,7 +31,11 @@ export function DashboardContent({ walletName, walletAddress }: DashboardContent
         <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl p-6 border border-primary/20">
           <div className="text-sm text-muted-foreground mb-1">Total Balance</div>
           <div className="text-3xl font-bold text-foreground">
-            ${totalUsdValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            $
+            {totalUsdValue.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </div>
         </div>
       )}
@@ -52,19 +56,27 @@ export function DashboardContent({ walletName, walletAddress }: DashboardContent
 
       {/* Quick Actions */}
       <QuickActions
-        onSwap={() => setActiveModal("swap")}
-        onSend={() => setActiveModal("send")}
-        onReceive={() => setActiveModal("receive")}
+        onSwap={() => setActiveModal('swap')}
+        onSend={() => setActiveModal('send')}
+        onReceive={() => setActiveModal('receive')}
       />
 
       {/* Transaction History */}
       <TransactionHistory />
 
       {/* Modals */}
-      <SwapModal open={activeModal === "swap"} onOpenChange={(open) => !open && setActiveModal(null)} />
-      <SendModal open={activeModal === "send"} onOpenChange={(open) => !open && setActiveModal(null)} />
-      <ReceiveModal open={activeModal === "receive"} onOpenChange={(open) => !open && setActiveModal(null)} />
+      <SwapModal
+        open={activeModal === 'swap'}
+        onOpenChange={(open) => !open && setActiveModal(null)}
+      />
+      <SendModal
+        open={activeModal === 'send'}
+        onOpenChange={(open) => !open && setActiveModal(null)}
+      />
+      <ReceiveModal
+        open={activeModal === 'receive'}
+        onOpenChange={(open) => !open && setActiveModal(null)}
+      />
     </div>
   )
 }
-

@@ -1,4 +1,4 @@
-import { BillsReceiptPage } from "@/components/bills/bills-receipt-page"
+import { BillsReceiptPage } from '@/components/bills/bills-receipt-page'
 
 interface ReceiptPageProps {
   params: Promise<{ transactionId: string }>

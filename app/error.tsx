@@ -1,6 +1,6 @@
-'use client';
+'use client'
 
-import ErrorLayout from '@/components/error/ErrorLayout';
+import ErrorLayout from '@/components/error/ErrorLayout'
 
 export default function GlobalError({ reset }: { reset: () => void }) {
   return (
@@ -13,5 +13,5 @@ export default function GlobalError({ reset }: { reset: () => void }) {
         { label: 'Home', href: '/' },
       ]}
     />
-  );
+  )
 }

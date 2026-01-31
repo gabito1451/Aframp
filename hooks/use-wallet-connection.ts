@@ -1,19 +1,19 @@
-"use client"
+'use client'
 
-import { useCallback, useEffect, useState } from "react"
-import { isValidStellarAddress } from "@/lib/onramp/validation"
+import { useCallback, useEffect, useState } from 'react'
+import { isValidStellarAddress } from '@/lib/onramp/validation'
 
-const STORAGE_ADDRESS = "walletAddress"
-const STORAGE_WALLET_LIST = "walletAddresses"
+const STORAGE_ADDRESS = 'walletAddress'
+const STORAGE_WALLET_LIST = 'walletAddresses'
 
 export function useWalletConnection() {
-  const [address, setAddress] = useState<string>("")
+  const [address, setAddress] = useState<string>('')
   const [addresses, setAddresses] = useState<string[]>([])
   const [connected, setConnected] = useState(false)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const storedAddress = localStorage.getItem(STORAGE_ADDRESS) || ""
+    const storedAddress = localStorage.getItem(STORAGE_ADDRESS) || ''
     const storedList = localStorage.getItem(STORAGE_WALLET_LIST)
     const parsedList = storedList ? (JSON.parse(storedList) as string[]) : []
     const normalizedList = parsedList.filter(Boolean)
@@ -22,10 +22,12 @@ export function useWalletConnection() {
       normalizedList.unshift(storedAddress)
     }
 
-    setAddresses(normalizedList)
-    setAddress(storedAddress)
-    setConnected(isValidStellarAddress(storedAddress))
-    setLoading(false)
+    Promise.resolve().then(() => {
+      setAddresses(normalizedList)
+      setAddress(storedAddress)
+      setConnected(isValidStellarAddress(storedAddress))
+      setLoading(false)
+    })
   }, [])
 
   const updateAddress = useCallback((nextAddress: string) => {
@@ -46,8 +48,8 @@ export function useWalletConnection() {
 
   const disconnect = useCallback(() => {
     localStorage.removeItem(STORAGE_ADDRESS)
-    localStorage.removeItem("walletName")
-    setAddress("")
+    localStorage.removeItem('walletName')
+    setAddress('')
     setConnected(false)
   }, [])
 

@@ -1,77 +1,77 @@
-"use client"
+'use client'
 
-import { motion } from "framer-motion"
-import { ArrowUp, ArrowDown, ArrowLeftRight, Clock, CheckCircle2, XCircle } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { motion } from 'framer-motion'
+import { ArrowUp, ArrowDown, ArrowLeftRight, Clock, CheckCircle2, XCircle } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface Transaction {
   id: string
-  type: "send" | "receive" | "swap"
+  type: 'send' | 'receive' | 'swap'
   amount: string
   currency: string
   to?: string
   from?: string
-  status: "pending" | "completed" | "failed"
+  status: 'pending' | 'completed' | 'failed'
   timestamp: string
 }
 
 const mockTransactions: Transaction[] = [
   {
-    id: "1",
-    type: "send",
-    amount: "15,000",
-    currency: "cNGN",
-    to: "0x742d...35Cc",
-    status: "completed",
-    timestamp: "2 hours ago",
+    id: '1',
+    type: 'send',
+    amount: '15,000',
+    currency: 'cNGN',
+    to: '0x742d...35Cc',
+    status: 'completed',
+    timestamp: '2 hours ago',
   },
   {
-    id: "2",
-    type: "receive",
-    amount: "0.0025",
-    currency: "BTC",
-    from: "0x8a3f...9D2e",
-    status: "completed",
-    timestamp: "5 hours ago",
+    id: '2',
+    type: 'receive',
+    amount: '0.0025',
+    currency: 'BTC',
+    from: '0x8a3f...9D2e',
+    status: 'completed',
+    timestamp: '5 hours ago',
   },
   {
-    id: "3",
-    type: "swap",
-    amount: "50,000",
-    currency: "cNGN → ETH",
-    status: "pending",
-    timestamp: "1 day ago",
+    id: '3',
+    type: 'swap',
+    amount: '50,000',
+    currency: 'cNGN → ETH',
+    status: 'pending',
+    timestamp: '1 day ago',
   },
   {
-    id: "4",
-    type: "send",
-    amount: "5,000",
-    currency: "cNGN",
-    to: "0x1a2b...3c4d",
-    status: "failed",
-    timestamp: "2 days ago",
+    id: '4',
+    type: 'send',
+    amount: '5,000',
+    currency: 'cNGN',
+    to: '0x1a2b...3c4d',
+    status: 'failed',
+    timestamp: '2 days ago',
   },
 ]
 
 export function TransactionHistory() {
-  const getIcon = (type: Transaction["type"]) => {
+  const getIcon = (type: Transaction['type']) => {
     switch (type) {
-      case "send":
+      case 'send':
         return <ArrowUp className="w-4 h-4" />
-      case "receive":
+      case 'receive':
         return <ArrowDown className="w-4 h-4" />
-      case "swap":
+      case 'swap':
         return <ArrowLeftRight className="w-4 h-4" />
     }
   }
 
-  const getStatusIcon = (status: Transaction["status"]) => {
+  const getStatusIcon = (status: Transaction['status']) => {
     switch (status) {
-      case "completed":
+      case 'completed':
         return <CheckCircle2 className="w-4 h-4 text-green-500" />
-      case "pending":
+      case 'pending':
         return <Clock className="w-4 h-4 text-yellow-500" />
-      case "failed":
+      case 'failed':
         return <XCircle className="w-4 h-4 text-red-500" />
     }
   }
@@ -95,12 +95,12 @@ export function TransactionHistory() {
             <div className="flex items-center gap-3">
               <div
                 className={cn(
-                  "w-10 h-10 rounded-lg flex items-center justify-center",
-                  tx.type === "send"
-                    ? "bg-red-500/10 text-red-500"
-                    : tx.type === "receive"
-                    ? "bg-green-500/10 text-green-500"
-                    : "bg-blue-500/10 text-blue-500"
+                  'w-10 h-10 rounded-lg flex items-center justify-center',
+                  tx.type === 'send'
+                    ? 'bg-red-500/10 text-red-500'
+                    : tx.type === 'receive'
+                      ? 'bg-green-500/10 text-green-500'
+                      : 'bg-blue-500/10 text-blue-500'
                 )}
               >
                 {getIcon(tx.type)}
@@ -121,7 +121,7 @@ export function TransactionHistory() {
             </div>
             <div className="text-right">
               <div className="font-semibold text-foreground">
-                {tx.amount} {tx.currency.split(" →")[0]}
+                {tx.amount} {tx.currency.split(' →')[0]}
               </div>
               <div className="text-xs text-muted-foreground">{tx.timestamp}</div>
             </div>
@@ -134,5 +134,3 @@ export function TransactionHistory() {
     </motion.div>
   )
 }
-
-

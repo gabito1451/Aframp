@@ -1,16 +1,16 @@
-"use client"
+'use client'
 
-import { useState } from "react"
+import { useState } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { ArrowDown, Copy, Check, QrCode } from "lucide-react"
-import { motion } from "framer-motion"
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { ArrowDown, Copy, Check, QrCode } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface ReceiveModalProps {
   open: boolean
@@ -19,7 +19,7 @@ interface ReceiveModalProps {
 
 export function ReceiveModal({ open, onOpenChange }: ReceiveModalProps) {
   const [copied, setCopied] = useState(false)
-  const walletAddress = "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+  const walletAddress = '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb'
 
   const handleCopy = () => {
     navigator.clipboard.writeText(walletAddress)
@@ -35,9 +35,7 @@ export function ReceiveModal({ open, onOpenChange }: ReceiveModalProps) {
             <ArrowDown className="w-5 h-5" />
             Receive Tokens
           </DialogTitle>
-          <DialogDescription>
-            Share your wallet address to receive tokens
-          </DialogDescription>
+          <DialogDescription>Share your wallet address to receive tokens</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
@@ -62,17 +60,8 @@ export function ReceiveModal({ open, onOpenChange }: ReceiveModalProps) {
                 readOnly
                 className="flex-1 px-4 py-3 rounded-lg border border-border bg-muted text-foreground font-mono text-sm"
               />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleCopy}
-                className="px-3"
-              >
-                {copied ? (
-                  <Check className="w-4 h-4 text-primary" />
-                ) : (
-                  <Copy className="w-4 h-4" />
-                )}
+              <Button variant="outline" size="sm" onClick={handleCopy} className="px-3">
+                {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
               </Button>
             </div>
           </div>
@@ -85,17 +74,17 @@ export function ReceiveModal({ open, onOpenChange }: ReceiveModalProps) {
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Supported Chains</span>
-              <span className="text-foreground font-medium">Ethereum, Bitcoin, Stellar, Lightning</span>
+              <span className="text-foreground font-medium">
+                Ethereum, Bitcoin, Stellar, Lightning
+              </span>
             </div>
           </div>
 
           <div className="text-xs text-muted-foreground text-center">
-            Make sure you'#39;re sending tokens on the correct network
+            Make sure you&apos;re sending tokens on the correct network
           </div>
         </div>
       </DialogContent>
     </Dialog>
   )
 }
-
-

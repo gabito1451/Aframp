@@ -1,14 +1,21 @@
-export type FiatCurrency = "NGN" | "KES" | "GHS" | "ZAR" | "UGX"
-export type CryptoAsset = "cNGN" | "cKES" | "cGHS" | "USDC" | "XLM"
-export type PaymentMethod = "bank_transfer" | "card" | "mobile_money"
-export type OrderStatus = "created" | "awaiting_payment" | "payment_received" | "minting" | "transferring" | "completed" | "failed"
+export type FiatCurrency = 'NGN' | 'KES' | 'GHS' | 'ZAR' | 'UGX'
+export type CryptoAsset = 'cNGN' | 'cKES' | 'cGHS' | 'USDC' | 'XLM'
+export type PaymentMethod = 'bank_transfer' | 'card' | 'mobile_money'
+export type OrderStatus =
+  | 'created'
+  | 'awaiting_payment'
+  | 'payment_received'
+  | 'minting'
+  | 'transferring'
+  | 'completed'
+  | 'failed'
 
 export interface ExchangeRateResult {
   fiat: FiatCurrency
   asset: CryptoAsset
   rate: number
   lastUpdated: number
-  source: "coingecko" | "cache"
+  source: 'coingecko' | 'cache'
 }
 
 export interface ExchangeRateState {
@@ -54,6 +61,6 @@ export interface TransactionItem {
   id: string
   fromAmount: string
   toAmount: string
-  status: "Completed" | "Pending" | "Failed"
+  status: 'Completed' | 'Pending' | 'Failed'
   timeLabel: string
 }

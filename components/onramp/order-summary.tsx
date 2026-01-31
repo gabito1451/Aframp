@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { ArrowRight } from "lucide-react"
+import { ArrowRight } from 'lucide-react'
 
 interface OrderSummaryProps {
   fiatAmount: string
@@ -24,10 +24,10 @@ export function OrderSummary({
   walletAddress,
 }: OrderSummaryProps) {
   const summaryItems = [
-    { label: "Exchange Rate", value: exchangeRate },
-    { label: "Fee", value: fee },
-    { label: "Payment Method", value: paymentMethod },
-    { label: "Destination Wallet", value: truncateAddress(walletAddress) },
+    { label: 'Exchange Rate', value: exchangeRate },
+    { label: 'Fee', value: fee },
+    { label: 'Payment Method', value: paymentMethod },
+    { label: 'Destination Wallet', value: truncateAddress(walletAddress) },
   ]
 
   return (

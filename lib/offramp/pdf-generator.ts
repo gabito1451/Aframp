@@ -1,4 +1,4 @@
-import jsPDF from "jspdf"
+import jsPDF from 'jspdf'
 
 export interface ReceiptRow {
   label: string
@@ -26,7 +26,7 @@ export function generateReceiptPDF(data: ReceiptPdfData, filename: string) {
   doc.setFontSize(20)
   doc.text(data.title, 16, y)
   doc.setFontSize(11)
-  doc.text(`Reference: ${data.reference}`, 150, y, { align: "right" })
+  doc.text(`Reference: ${data.reference}`, 150, y, { align: 'right' })
   y += 8
 
   if (data.subtitle) {

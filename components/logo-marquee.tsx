@@ -1,22 +1,22 @@
-"use client"
+'use client'
 
-import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
 
 const logos = [
-  { name: "Binance", initial: "B" },
-  { name: "Flutterwave", initial: "F" },
-  { name: "Paystack", initial: "P" },
-  { name: "MTN MoMo", initial: "M" },
-  { name: "Chipper", initial: "C" },
-  { name: "Luno", initial: "L" },
-  { name: "Kuda Bank", initial: "K" },
-  { name: "OPay", initial: "O" },
+  { name: 'Binance', initial: 'B' },
+  { name: 'Flutterwave', initial: 'F' },
+  { name: 'Paystack', initial: 'P' },
+  { name: 'MTN MoMo', initial: 'M' },
+  { name: 'Chipper', initial: 'C' },
+  { name: 'Luno', initial: 'L' },
+  { name: 'Kuda Bank', initial: 'K' },
+  { name: 'OPay', initial: 'O' },
 ]
 
 export function LogoMarquee() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section ref={ref} className="py-16 overflow-hidden border-y border-border bg-muted/30">
@@ -27,7 +27,7 @@ export function LogoMarquee() {
         className="text-center mb-10"
       >
         <p className="text-sm text-muted-foreground uppercase tracking-wider font-medium">
-          Integrated with Africa's leading platforms
+          Integrated with Africa&apos;s leading platforms
         </p>
       </motion.div>
 
@@ -47,7 +47,10 @@ export function LogoMarquee() {
                 <div className="w-10 h-10 rounded-xl bg-card border border-border flex items-center justify-center shadow-sm">
                   <span className="text-sm font-bold text-primary">{logo.initial}</span>
                 </div>
-                <span className="font-medium text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+                <span
+                  className="font-medium text-foreground"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
                   {logo.name}
                 </span>
               </div>

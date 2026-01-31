@@ -1,12 +1,17 @@
-"use client"
+'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import type { CryptoAsset, ExchangeRateResult, ExchangeRateState, FiatCurrency } from "@/types/onramp"
-import { formatRate } from "@/lib/onramp/formatters"
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type {
+  CryptoAsset,
+  ExchangeRateResult,
+  ExchangeRateState,
+  FiatCurrency,
+} from '@/types/onramp'
+import { formatRate } from '@/lib/onramp/formatters'
 
-const API_URL = "/api/exchange-rate"
+const API_URL = '/api/exchange-rate'
 
-const STORAGE_KEY = "onramp:rates"
+const STORAGE_KEY = 'onramp:rates'
 const COUNTDOWN_START = 30
 
 function buildRateResult(
@@ -14,11 +19,11 @@ function buildRateResult(
   asset: CryptoAsset,
   usdcPrice: number,
   xlmPrice: number,
-  source: "coingecko" | "cache",
+  source: 'coingecko' | 'cache',
   lastUpdated: number
 ): ExchangeRateResult {
   const assetLower = asset.toLowerCase()
-  const isXlm = assetLower === "xlm"
+  const isXlm = assetLower === 'xlm'
   const rate = isXlm ? 1 / xlmPrice : 1 / usdcPrice
 
   return {
@@ -41,7 +46,7 @@ async function fetchWithRetry(retries: number) {
         throw new Error(`Exchange rate request failed: ${response.status}`)
       }
       return (await response.json()) as {
-        "usd-coin": Record<string, number>
+        'usd-coin': Record<string, number>
         stellar: Record<string, number>
       }
     } catch (error) {
@@ -52,7 +57,7 @@ async function fetchWithRetry(retries: number) {
     }
   }
 
-  throw lastError || new Error("Unable to fetch exchange rates.")
+  throw lastError || new Error('Unable to fetch exchange rates.')
 }
 
 export function useExchangeRate(fiat: FiatCurrency, asset: CryptoAsset) {
@@ -66,14 +71,14 @@ export function useExchangeRate(fiat: FiatCurrency, asset: CryptoAsset) {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const updateFromCache = useCallback(
-    (cached: { timestamp: number; data: any }, reason: string) => {
+    (cached: { timestamp: number; data: Record<string, Record<string, number>> }, reason: string) => {
       if (!cached?.data) return
       const lower = fiat.toLowerCase()
-      const usdcPrice = cached.data["usd-coin"]?.[lower]
+      const usdcPrice = cached.data['usd-coin']?.[lower]
       const xlmPrice = cached.data.stellar?.[lower]
       if (!usdcPrice || !xlmPrice) return
 
-      const result = buildRateResult(fiat, asset, usdcPrice, xlmPrice, "cache", cached.timestamp)
+      const result = buildRateResult(fiat, asset, usdcPrice, xlmPrice, 'cache', cached.timestamp)
 
       setState((prev) => ({
         ...prev,
@@ -90,17 +95,14 @@ export function useExchangeRate(fiat: FiatCurrency, asset: CryptoAsset) {
     try {
       const data = await fetchWithRetry(3)
       const lower = fiat.toLowerCase()
-      const usdcPrice = data["usd-coin"]?.[lower]
+      const usdcPrice = data['usd-coin']?.[lower]
       const xlmPrice = data.stellar?.[lower]
       if (!usdcPrice || !xlmPrice) {
-        throw new Error("Exchange rate unavailable for selected currency.")
+        throw new Error('Exchange rate unavailable for selected currency.')
       }
 
-      const result = buildRateResult(fiat, asset, usdcPrice, xlmPrice, "coingecko", Date.now())
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({ timestamp: result.lastUpdated, data })
-      )
+      const result = buildRateResult(fiat, asset, usdcPrice, xlmPrice, 'coingecko', Date.now())
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ timestamp: result.lastUpdated, data }))
 
       setState({
         data: result,
@@ -111,10 +113,10 @@ export function useExchangeRate(fiat: FiatCurrency, asset: CryptoAsset) {
       })
     } catch (error) {
       const message = (error as Error).message
-      console.error("Exchange rate error:", error)
+      console.error('Exchange rate error:', error)
       const cachedRaw = localStorage.getItem(STORAGE_KEY)
       if (cachedRaw) {
-        updateFromCache(JSON.parse(cachedRaw), "Using cached exchange rate.")
+        updateFromCache(JSON.parse(cachedRaw), 'Using cached exchange rate.')
       }
       setState((prev) => ({
         ...prev,
@@ -127,7 +129,7 @@ export function useExchangeRate(fiat: FiatCurrency, asset: CryptoAsset) {
   useEffect(() => {
     const cachedRaw = localStorage.getItem(STORAGE_KEY)
     if (cachedRaw) {
-      updateFromCache(JSON.parse(cachedRaw), "Using cached exchange rate while refreshing.")
+      updateFromCache(JSON.parse(cachedRaw), 'Using cached exchange rate while refreshing.')
     }
     refresh()
   }, [refresh, updateFromCache])
@@ -152,7 +154,7 @@ export function useExchangeRate(fiat: FiatCurrency, asset: CryptoAsset) {
   }, [refresh])
 
   const displayRate = useMemo(() => {
-    if (!state.data) return ""
+    if (!state.data) return ''
     return `1 ${state.data.fiat} = ${formatRate(state.data.rate)} ${state.data.asset}`
   }, [state.data])
 

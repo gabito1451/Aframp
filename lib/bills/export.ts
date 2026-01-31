@@ -1,4 +1,4 @@
-import html2canvas from "html2canvas"
+import html2canvas from 'html2canvas'
 
 const RGB_OVERRIDES = `
 :root {
@@ -57,32 +57,34 @@ export async function exportReceiptPNG(elementId: string, filename: string) {
     scale: 2,
     useCORS: true,
     logging: false,
-    backgroundColor: "#ffffff",
+    backgroundColor: '#ffffff',
     onclone: (doc) => {
-      const style = doc.createElement("style")
+      const style = doc.createElement('style')
       style.textContent = RGB_OVERRIDES
       doc.head.appendChild(style)
 
       doc.querySelectorAll("style,link[rel='stylesheet']").forEach((node) => {
-        const text = node.textContent || ""
-        const href = node.getAttribute?.("href") || ""
+        const text = node.textContent || ''
+        const href = node.getAttribute?.('href') || ''
         if (/oklab|oklch|lab\(/i.test(text) || /globals\.css|app\/globals/i.test(href)) {
           node.parentNode?.removeChild(node)
         }
       })
     },
   })
-  const link = document.createElement("a")
-  link.href = canvas.toDataURL("image/png")
+  const link = document.createElement('a')
+  link.href = canvas.toDataURL('image/png')
   link.download = filename
   link.click()
   return true
 }
 
 export function exportReceiptCSV(filename: string, rows: Array<[string, string]>) {
-  const csvContent = rows.map((row) => row.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(",")).join("\n")
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
-  const link = document.createElement("a")
+  const csvContent = rows
+    .map((row) => row.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(','))
+    .join('\n')
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+  const link = document.createElement('a')
   link.href = URL.createObjectURL(blob)
   link.download = filename
   link.click()

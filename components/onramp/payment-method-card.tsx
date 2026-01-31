@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { cn } from "@/lib/utils"
-import type { PaymentMethod } from "@/types/onramp"
+import { cn } from '@/lib/utils'
+import type { PaymentMethod } from '@/types/onramp'
 
 interface PaymentMethodCardProps {
   value: PaymentMethod
@@ -25,10 +25,10 @@ export function PaymentMethodCard({
       type="button"
       onClick={() => onSelect(value)}
       className={cn(
-        "w-full rounded-2xl border px-4 py-4 text-left transition-all focus:outline-none focus:ring-2 focus:ring-primary/30",
+        'w-full rounded-2xl border px-4 py-4 text-left transition-all focus:outline-none focus:ring-2 focus:ring-primary/30',
         selected
-          ? "border-primary/60 bg-primary/5 shadow-sm"
-          : "border-border bg-background hover:border-primary/40 hover:shadow-sm"
+          ? 'border-primary/60 bg-primary/5 shadow-sm'
+          : 'border-border bg-background hover:border-primary/40 hover:shadow-sm'
       )}
       aria-pressed={selected}
     >

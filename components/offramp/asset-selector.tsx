@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { useMemo, useState } from "react"
-import { ChevronDown } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { formatNumber } from "@/lib/onramp/formatters"
-import type { OfframpAssetOption } from "@/types/offramp"
+import { useMemo, useState } from 'react'
+import { ChevronDown } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { formatNumber } from '@/lib/onramp/formatters'
+import type { OfframpAssetOption } from '@/types/offramp'
 
 interface AssetSelectorProps {
   options: OfframpAssetOption[]
@@ -14,7 +14,10 @@ interface AssetSelectorProps {
 
 export function AssetSelector({ options, value, onChange }: AssetSelectorProps) {
   const [open, setOpen] = useState(false)
-  const selected = useMemo(() => options.find((option) => option.id === value) || options[0], [options, value])
+  const selected = useMemo(
+    () => options.find((option) => option.id === value) || options[0],
+    [options, value]
+  )
 
   return (
     <div className="relative">
@@ -53,8 +56,8 @@ export function AssetSelector({ options, value, onChange }: AssetSelectorProps) 
                 setOpen(false)
               }}
               className={cn(
-                "flex w-full items-center justify-between px-4 py-3 text-left text-sm hover:bg-muted",
-                option.id === selected.id ? "bg-muted" : ""
+                'flex w-full items-center justify-between px-4 py-3 text-left text-sm hover:bg-muted',
+                option.id === selected.id ? 'bg-muted' : ''
               )}
             >
               <div className="flex items-center gap-2">
@@ -66,7 +69,9 @@ export function AssetSelector({ options, value, onChange }: AssetSelectorProps) 
                   <div className="text-xs text-muted-foreground">{option.chain}</div>
                 </div>
               </div>
-              <span className="text-xs text-muted-foreground">{formatNumber(option.balance, 4)}</span>
+              <span className="text-xs text-muted-foreground">
+                {formatNumber(option.balance, 4)}
+              </span>
             </button>
           ))}
         </div>

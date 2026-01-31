@@ -1,15 +1,15 @@
-"use client"
+'use client'
 
-import { useState } from "react"
+import { useState } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { ArrowLeftRight, ArrowDown } from "lucide-react"
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { ArrowLeftRight, ArrowDown } from 'lucide-react'
 
 interface SwapModalProps {
   open: boolean
@@ -17,13 +17,13 @@ interface SwapModalProps {
 }
 
 export function SwapModal({ open, onOpenChange }: SwapModalProps) {
-  const [fromAmount, setFromAmount] = useState("")
-  const [toAmount, setToAmount] = useState("")
-  const [fromCurrency, setFromCurrency] = useState("cNGN")
-  const [toCurrency, setToCurrency] = useState("BTC")
+  const [fromAmount, setFromAmount] = useState('')
+  const [toAmount, setToAmount] = useState('')
+  const [fromCurrency, setFromCurrency] = useState('cNGN')
+  const [toCurrency, setToCurrency] = useState('BTC')
   const [swapping, setSwapping] = useState(false)
 
-  const currencies = ["cNGN", "BTC", "ETH", "XLM", "USDT"]
+  const currencies = ['cNGN', 'BTC', 'ETH', 'XLM', 'USDT']
 
   const handleSwap = async () => {
     setSwapping(true)
@@ -32,8 +32,8 @@ export function SwapModal({ open, onOpenChange }: SwapModalProps) {
     setSwapping(false)
     onOpenChange(false)
     // Reset form
-    setFromAmount("")
-    setToAmount("")
+    setFromAmount('')
+    setToAmount('')
   }
 
   const swapCurrencies = () => {
@@ -53,9 +53,7 @@ export function SwapModal({ open, onOpenChange }: SwapModalProps) {
             <ArrowLeftRight className="w-5 h-5" />
             Swap Tokens
           </DialogTitle>
-          <DialogDescription>
-            Exchange your tokens instantly with low fees
-          </DialogDescription>
+          <DialogDescription>Exchange your tokens instantly with low fees</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
@@ -82,9 +80,7 @@ export function SwapModal({ open, onOpenChange }: SwapModalProps) {
                 ))}
               </select>
             </div>
-            <div className="text-xs text-muted-foreground">
-              Balance: 2,450,000 cNGN
-            </div>
+            <div className="text-xs text-muted-foreground">Balance: 2,450,000 cNGN</div>
           </div>
 
           {/* Swap Button */}
@@ -118,9 +114,7 @@ export function SwapModal({ open, onOpenChange }: SwapModalProps) {
                 ))}
               </select>
             </div>
-            <div className="text-xs text-muted-foreground">
-              ≈ $1,650 USD
-            </div>
+            <div className="text-xs text-muted-foreground">≈ $1,650 USD</div>
           </div>
 
           {/* Swap Info */}
@@ -136,7 +130,7 @@ export function SwapModal({ open, onOpenChange }: SwapModalProps) {
             <div className="flex justify-between">
               <span className="text-muted-foreground">You receive</span>
               <span className="text-foreground font-semibold">
-                {toAmount || "0.00"} {toCurrency}
+                {toAmount || '0.00'} {toCurrency}
               </span>
             </div>
           </div>
@@ -148,12 +142,10 @@ export function SwapModal({ open, onOpenChange }: SwapModalProps) {
             className="w-full h-12 text-base font-medium"
             size="lg"
           >
-            {swapping ? "Swapping..." : "Swap Tokens"}
+            {swapping ? 'Swapping...' : 'Swap Tokens'}
           </Button>
         </div>
       </DialogContent>
     </Dialog>
   )
 }
-
-

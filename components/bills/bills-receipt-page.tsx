@@ -1,4 +1,4 @@
-import { BillsReceiptClient } from "@/components/bills/bills-receipt-client"
+import { BillsReceiptClient } from '@/components/bills/bills-receipt-client'
 
 interface BillsReceiptPageProps {
   transactionId: string

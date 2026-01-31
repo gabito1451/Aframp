@@ -1,7 +1,7 @@
-import type { FiatCurrency } from "@/types/onramp"
+import type { FiatCurrency } from '@/types/onramp'
 
-export type OfframpChain = "Stellar" | "Ethereum" | "Polygon" | "Base"
-export type OfframpAsset = "cNGN" | "USDC" | "USDT" | "XLM"
+export type OfframpChain = 'Stellar' | 'Ethereum' | 'Polygon' | 'Base'
+export type OfframpAsset = 'cNGN' | 'USDC' | 'USDT' | 'XLM'
 
 export interface OfframpAssetOption {
   id: string
@@ -45,5 +45,5 @@ export interface OfframpOrder {
   rate: number
   fiatAmount: number
   fees: OfframpFeeBreakdown
-  status: "pending_bank_details"
+  status: 'pending_bank_details'
 }

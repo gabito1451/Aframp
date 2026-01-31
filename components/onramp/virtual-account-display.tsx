@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { Copy, Check, Building2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { useState } from 'react'
+import { Copy, Check, Building2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 interface VirtualAccountDetails {
   bankName: string
@@ -28,16 +28,21 @@ export function VirtualAccountDisplay({ account }: VirtualAccountDisplayProps) {
       setCopiedField(field)
       setTimeout(() => setCopiedField(null), 2000)
     } catch (err) {
-      console.error("Failed to copy:", err)
+      console.error('Failed to copy:', err)
     }
   }
 
   const fields = [
-    { label: "Bank", value: account.bankName, copyable: false },
-    { label: "Account Number", value: account.accountNumber, copyable: true, field: "accountNumber" },
-    { label: "Account Name", value: account.accountName, copyable: true, field: "accountName" },
-    { label: "Amount", value: account.amount, copyable: true, field: "amount", highlight: true },
-    { label: "Reference", value: account.reference, copyable: true, field: "reference" },
+    { label: 'Bank', value: account.bankName, copyable: false },
+    {
+      label: 'Account Number',
+      value: account.accountNumber,
+      copyable: true,
+      field: 'accountNumber',
+    },
+    { label: 'Account Name', value: account.accountName, copyable: true, field: 'accountName' },
+    { label: 'Amount', value: account.amount, copyable: true, field: 'amount', highlight: true },
+    { label: 'Reference', value: account.reference, copyable: true, field: 'reference' },
   ]
 
   return (
@@ -48,7 +53,9 @@ export function VirtualAccountDisplay({ account }: VirtualAccountDisplayProps) {
         </div>
         <div>
           <h3 className="font-semibold text-foreground">Virtual Account Details</h3>
-          <p className="text-sm text-muted-foreground">Transfer to this account to complete your order</p>
+          <p className="text-sm text-muted-foreground">
+            Transfer to this account to complete your order
+          </p>
         </div>
       </div>
 
@@ -57,16 +64,13 @@ export function VirtualAccountDisplay({ account }: VirtualAccountDisplayProps) {
           <div
             key={field.label}
             className={cn(
-              "flex items-center justify-between p-4",
-              field.highlight && "bg-primary/5"
+              'flex items-center justify-between p-4',
+              field.highlight && 'bg-primary/5'
             )}
           >
             <div className="space-y-1">
               <p className="text-sm text-muted-foreground">{field.label}</p>
-              <p className={cn(
-                "font-medium",
-                field.highlight && "text-lg text-primary"
-              )}>
+              <p className={cn('font-medium', field.highlight && 'text-lg text-primary')}>
                 {field.value}
               </p>
             </div>

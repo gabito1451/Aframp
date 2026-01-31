@@ -1,35 +1,37 @@
-"use client"
+'use client'
 
-import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
-import { Download, Wallet, ArrowLeftRight, Rocket } from "lucide-react"
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
+import { Download, Wallet, ArrowLeftRight, Rocket } from 'lucide-react'
 
 const steps = [
   {
     icon: Download,
-    title: "Download & Sign Up",
-    description: "Get the Aframp app and create your account in under 2 minutes with just your phone number.",
+    title: 'Download & Sign Up',
+    description:
+      'Get the Aframp app and create your account in under 2 minutes with just your phone number.',
   },
   {
     icon: Wallet,
-    title: "Fund Your Wallet",
-    description: "Add cNGN to your wallet via bank transfer, card, or mobile money. Zero funding fees.",
+    title: 'Fund Your Wallet',
+    description:
+      'Add cNGN to your wallet via bank transfer, card, or mobile money. Zero funding fees.',
   },
   {
     icon: ArrowLeftRight,
-    title: "Start Transacting",
-    description: "Buy crypto, pay bills, or send money to anyone across Africa instantly.",
+    title: 'Start Transacting',
+    description: 'Buy crypto, pay bills, or send money to anyone across Africa instantly.',
   },
   {
     icon: Rocket,
-    title: "Grow Your Wealth",
-    description: "Earn rewards, access exclusive features, and watch your portfolio grow.",
+    title: 'Grow Your Wealth',
+    description: 'Earn rewards, access exclusive features, and watch your portfolio grow.',
   },
 ]
 
 export function HowItWorks() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section id="how-it-works" className="py-24 px-4 bg-muted/30">
@@ -42,7 +44,7 @@ export function HowItWorks() {
         >
           <h2
             className="text-3xl sm:text-4xl font-bold text-foreground mb-4"
-            style={{ fontFamily: "var(--font-display)" }}
+            style={{ fontFamily: 'var(--font-display)' }}
           >
             Get started in minutes
           </h2>

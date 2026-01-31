@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { AlertTriangle } from "lucide-react"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { AlertTriangle } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface PaymentInstructionsProps {
   amount: string
@@ -11,17 +11,17 @@ interface PaymentInstructionsProps {
 
 export function PaymentInstructions({ amount, reference, expiresIn }: PaymentInstructionsProps) {
   const steps = [
-    "Open your bank app or USSD banking",
+    'Open your bank app or USSD banking',
     `Transfer exactly ${amount} to the account above`,
     `Include reference code "${reference}" in the narration`,
-    "Wait for confirmation (usually 2-5 minutes)",
+    'Wait for confirmation (usually 2-5 minutes)',
   ]
 
   const warnings = [
     `Transfer EXACT amount (${amount})`,
-    "Include reference code in narration",
+    'Include reference code in narration',
     `Payment expires in ${expiresIn} minutes`,
-    "Do not reuse this account for future payments",
+    'Do not reuse this account for future payments',
   ]
 
   return (

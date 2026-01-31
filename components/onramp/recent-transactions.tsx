@@ -1,36 +1,36 @@
-"use client"
+'use client'
 
-import { cn } from "@/lib/utils"
-import type { TransactionItem } from "@/types/onramp"
+import { cn } from '@/lib/utils'
+import type { TransactionItem } from '@/types/onramp'
 
 const transactions: TransactionItem[] = [
   {
-    id: "tx-1",
-    fromAmount: "₦25,000",
-    toAmount: "15.58 cNGN",
-    status: "Completed",
-    timeLabel: "2 hrs ago",
+    id: 'tx-1',
+    fromAmount: '₦25,000',
+    toAmount: '15.58 cNGN',
+    status: 'Completed',
+    timeLabel: '2 hrs ago',
   },
   {
-    id: "tx-2",
-    fromAmount: "₦100,000",
-    toAmount: "62.35 cNGN",
-    status: "Pending",
-    timeLabel: "5 mins ago",
+    id: 'tx-2',
+    fromAmount: '₦100,000',
+    toAmount: '62.35 cNGN',
+    status: 'Pending',
+    timeLabel: '5 mins ago',
   },
   {
-    id: "tx-3",
-    fromAmount: "KES 8,000",
-    toAmount: "4.12 cKES",
-    status: "Failed",
-    timeLabel: "Yesterday",
+    id: 'tx-3',
+    fromAmount: 'KES 8,000',
+    toAmount: '4.12 cKES',
+    status: 'Failed',
+    timeLabel: 'Yesterday',
   },
 ]
 
-const statusClass: Record<TransactionItem["status"], string> = {
-  Completed: "bg-success/10 text-success",
-  Pending: "bg-warning/15 text-warning",
-  Failed: "bg-destructive/10 text-destructive",
+const statusClass: Record<TransactionItem['status'], string> = {
+  Completed: 'bg-success/10 text-success',
+  Pending: 'bg-warning/15 text-warning',
+  Failed: 'bg-destructive/10 text-destructive',
 }
 
 export function RecentTransactions() {
@@ -53,7 +53,7 @@ export function RecentTransactions() {
             </div>
             <span
               className={cn(
-                "inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold",
+                'inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold',
                 statusClass[tx.status]
               )}
             >

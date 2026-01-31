@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout"
-import { DashboardContent } from "@/components/dashboard/dashboard-content"
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout'
+import { DashboardContent } from '@/components/dashboard/dashboard-content'
 
 interface DashboardPageClientProps {
   initialWallet?: string
@@ -12,26 +12,31 @@ interface DashboardPageClientProps {
 
 export function DashboardPageClient({ initialWallet, initialAddress }: DashboardPageClientProps) {
   const router = useRouter()
-  const [walletAddress, setWalletAddress] = useState<string>("")
-  const [walletName, setWalletName] = useState<string>("")
+  const [walletAddress, setWalletAddress] = useState<string>('')
+  const [walletName, setWalletName] = useState<string>('')
   const [connected, setConnected] = useState(false)
 
   useEffect(() => {
     // Prefer URL params passed from the server, then fall back to localStorage
-    const wallet = initialWallet || localStorage.getItem("walletName")
-    const address = initialAddress || localStorage.getItem("walletAddress")
+    const wallet = initialWallet || (typeof window !== 'undefined' ? localStorage.getItem('walletName') : null)
+    const address = initialAddress || (typeof window !== 'undefined' ? localStorage.getItem('walletAddress') : null)
 
     if (wallet && address) {
-      setWalletName(wallet)
-      setWalletAddress(address)
-      setConnected(true)
+      // Batch state updates
+      Promise.resolve().then(() => {
+        setWalletName(wallet)
+        setWalletAddress(address)
+        setConnected(true)
 
-      // Ensure persistence
-      localStorage.setItem("walletName", wallet)
-      localStorage.setItem("walletAddress", address)
+        // Ensure persistence
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('walletName', wallet)
+          localStorage.setItem('walletAddress', address)
+        }
+      })
     } else {
       // Redirect to home if not connected
-      router.push("/")
+      router.push('/')
     }
   }, [initialWallet, initialAddress, router])
 
@@ -52,5 +57,3 @@ export function DashboardPageClient({ initialWallet, initialAddress }: Dashboard
     </DashboardLayout>
   )
 }
-
-

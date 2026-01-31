@@ -5,7 +5,7 @@ export interface TokenBalance {
   priceLoading?: boolean
   priceError?: string | null
   change?: number
-  trend?: "up" | "down"
+  trend?: 'up' | 'down'
 }
 
 export interface BalanceData {
@@ -13,5 +13,3 @@ export interface BalanceData {
   totalUsdValue: number
   lastUpdated: Date | null
 }
-
-

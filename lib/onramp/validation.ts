@@ -1,5 +1,5 @@
-import type { FiatCurrency } from "@/types/onramp"
-import { formatCurrency } from "@/lib/onramp/formatters"
+import type { FiatCurrency } from '@/types/onramp'
+import { formatCurrency } from '@/lib/onramp/formatters'
 
 const limitsMap: Record<FiatCurrency, { min: number; max: number }> = {
   NGN: { min: 1000, max: 500000 },
@@ -16,7 +16,7 @@ export function getLimits(currency: FiatCurrency) {
 export function validateAmount(amount: number, currency: FiatCurrency) {
   const { min, max } = limitsMap[currency]
   if (!amount || amount <= 0) {
-    return "Enter an amount to continue."
+    return 'Enter an amount to continue.'
   }
   if (amount < min) {
     return `Minimum amount is ${formatCurrency(min, currency, 0)}.`
@@ -24,7 +24,7 @@ export function validateAmount(amount: number, currency: FiatCurrency) {
   if (amount > max) {
     return `Maximum amount is ${formatCurrency(max, currency, 0)}.`
   }
-  return ""
+  return ''
 }
 
 export function isValidStellarAddress(address: string) {

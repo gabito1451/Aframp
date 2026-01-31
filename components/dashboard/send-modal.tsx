@@ -1,15 +1,15 @@
-"use client"
+'use client'
 
-import { useState } from "react"
+import { useState } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { ArrowUp, ScanLine } from "lucide-react"
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { ArrowUp, ScanLine } from 'lucide-react'
 
 interface SendModalProps {
   open: boolean
@@ -17,12 +17,12 @@ interface SendModalProps {
 }
 
 export function SendModal({ open, onOpenChange }: SendModalProps) {
-  const [amount, setAmount] = useState("")
-  const [address, setAddress] = useState("")
-  const [currency, setCurrency] = useState("cNGN")
+  const [amount, setAmount] = useState('')
+  const [address, setAddress] = useState('')
+  const [currency, setCurrency] = useState('cNGN')
   const [sending, setSending] = useState(false)
 
-  const currencies = ["cNGN", "BTC", "ETH", "XLM", "USDT"]
+  const currencies = ['cNGN', 'BTC', 'ETH', 'XLM', 'USDT']
 
   const handleSend = async () => {
     setSending(true)
@@ -31,8 +31,8 @@ export function SendModal({ open, onOpenChange }: SendModalProps) {
     setSending(false)
     onOpenChange(false)
     // Reset form
-    setAmount("")
-    setAddress("")
+    setAmount('')
+    setAddress('')
   }
 
   return (
@@ -43,9 +43,7 @@ export function SendModal({ open, onOpenChange }: SendModalProps) {
             <ArrowUp className="w-5 h-5" />
             Send Tokens
           </DialogTitle>
-          <DialogDescription>
-            Send tokens to any wallet address
-          </DialogDescription>
+          <DialogDescription>Send tokens to any wallet address</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
@@ -72,9 +70,7 @@ export function SendModal({ open, onOpenChange }: SendModalProps) {
                 ))}
               </select>
             </div>
-            <div className="text-xs text-muted-foreground">
-              Balance: 2,450,000 cNGN
-            </div>
+            <div className="text-xs text-muted-foreground">Balance: 2,450,000 cNGN</div>
           </div>
 
           {/* Address */}
@@ -103,7 +99,7 @@ export function SendModal({ open, onOpenChange }: SendModalProps) {
             <div className="flex justify-between">
               <span className="text-muted-foreground">Total</span>
               <span className="text-foreground font-semibold">
-                {amount || "0.00"} {currency}
+                {amount || '0.00'} {currency}
               </span>
             </div>
           </div>
@@ -115,12 +111,10 @@ export function SendModal({ open, onOpenChange }: SendModalProps) {
             className="w-full h-12 text-base font-medium"
             size="lg"
           >
-            {sending ? "Sending..." : "Send Tokens"}
+            {sending ? 'Sending...' : 'Send Tokens'}
           </Button>
         </div>
       </DialogContent>
     </Dialog>
   )
 }
-
-

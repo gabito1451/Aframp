@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { createContext, useContext, ReactNode } from "react"
-import { useBalances } from "@/hooks/use-balances"
-import { TokenBalance } from "@/types/balance"
+import { createContext, useContext, ReactNode } from 'react'
+import { useBalances } from '@/hooks/use-balances'
+import { TokenBalance } from '@/types/balance'
 
 interface BalanceContextType {
   balances: TokenBalance[]
@@ -22,11 +22,7 @@ interface BalanceProviderProps {
 export function BalanceProvider({ children, walletAddress }: BalanceProviderProps) {
   const balanceData = useBalances(walletAddress)
 
-  return (
-    <BalanceContext.Provider value={balanceData}>
-      {children}
-    </BalanceContext.Provider>
-  )
+  return <BalanceContext.Provider value={balanceData}>{children}</BalanceContext.Provider>
 }
 
 export function useBalanceContext() {
@@ -38,10 +34,8 @@ export function useBalanceContext() {
       totalUsdValue: 0,
       loading: true,
       lastUpdated: null,
-      refetch: async () => { },
+      refetch: async () => {},
     }
   }
   return context
 }
-
-

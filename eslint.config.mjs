@@ -1,7 +1,7 @@
-import nextPlugin from 'eslint-config-next';
-import tseslint from 'typescript-eslint';
+import nextPlugin from 'eslint-config-next'
+import tseslint from 'typescript-eslint'
 
-export default [
+const config = [
   {
     ignores: ['.next/**', 'node_modules/**', 'out/**', 'build/**', '*.d.ts'],
   },
@@ -23,4 +23,6 @@ export default [
       '@typescript-eslint/no-require-imports': 'off',
     },
   },
-];
+]
+
+export default config

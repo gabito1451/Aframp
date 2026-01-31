@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { useState, useEffect, useCallback } from "react"
-import { TokenBalance } from "@/types/balance"
+import { useState, useEffect, useCallback } from 'react'
+import { TokenBalance } from '@/types/balance'
 
 interface EthSymbol {
   symbol: string
@@ -23,22 +23,22 @@ export function useBalances(walletAddress?: string) {
   // Initial balances (in a real app, these would come from wallet/API)
   const [balances, setBalances] = useState<TokenBalance[]>([
     {
-      symbol: "cNGN",
+      symbol: 'cNGN',
       amount: 2450000,
       price: 0.00067, // Approximate USD value per cNGN
       change: 12.5,
-      trend: "up",
+      trend: 'up',
     },
     {
-      symbol: "BTC",
+      symbol: 'BTC',
       amount: 0.0025,
       price: null, // Will be fetched if needed
       priceLoading: false,
       change: 5.2,
-      trend: "up",
+      trend: 'up',
     },
     {
-      symbol: "ETH",
+      symbol: 'ETH',
       amount: 0.125,
       price: null, // Will be fetched from API
       priceLoading: true,
@@ -54,15 +54,15 @@ export function useBalances(walletAddress?: string) {
   const fetchWalletEthBalance = useCallback(async (address: string) => {
     try {
       // Using Infura free tier or similar RPC provider
-      const response = await fetch("https://eth-mainnet.g.alchemy.com/v2/demo", {
-        method: "POST",
+      const response = await fetch('https://eth-mainnet.g.alchemy.com/v2/demo', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          jsonrpc: "2.0",
-          method: "eth_getBalance",
-          params: [address, "latest"],
+          jsonrpc: '2.0',
+          method: 'eth_getBalance',
+          params: [address, 'latest'],
           id: 1,
         }),
       })
@@ -76,28 +76,28 @@ export function useBalances(walletAddress?: string) {
 
         setBalances((prev) =>
           prev.map((balance) =>
-            balance.symbol === "ETH"
+            balance.symbol === 'ETH'
               ? {
-                ...balance,
-                amount: balanceInEth,
-              }
+                  ...balance,
+                  amount: balanceInEth,
+                }
               : balance
           )
         )
       }
     } catch (error) {
-      console.error("Error fetching wallet ETH balance:", error)
+      console.error('Error fetching wallet ETH balance:', error)
     }
   }, [])
 
   const fetchEthPrice = useCallback(async () => {
     try {
-      const response = await fetch("https://kelly-musk.up.railway.app/api/eth-price", {
-        method: "GET",
+      const response = await fetch('https://kelly-musk.up.railway.app/api/eth-price', {
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        cache: "no-store",
+        cache: 'no-store',
       })
 
       if (!response.ok) {
@@ -108,43 +108,49 @@ export function useBalances(walletAddress?: string) {
 
       let ethPrice: number | null = null
 
-      if (data.status === "success" && data.symbols && Array.isArray(data.symbols) && data.symbols.length > 0) {
-        const ethSymbol = data.symbols.find((s) => s.symbol === "ETH") || data.symbols[0]
+      if (
+        data.status === 'success' &&
+        data.symbols &&
+        Array.isArray(data.symbols) &&
+        data.symbols.length > 0
+      ) {
+        const ethSymbol = data.symbols.find((s) => s.symbol === 'ETH') || data.symbols[0]
 
         if (ethSymbol && ethSymbol.last !== undefined) {
-          ethPrice = typeof ethSymbol.last === "string" ? parseFloat(ethSymbol.last) : ethSymbol.last
+          ethPrice =
+            typeof ethSymbol.last === 'string' ? parseFloat(ethSymbol.last) : ethSymbol.last
         }
       }
 
       if (ethPrice !== null && !isNaN(ethPrice)) {
         setBalances((prev) =>
           prev.map((balance) =>
-            balance.symbol === "ETH"
+            balance.symbol === 'ETH'
               ? {
-                ...balance,
-                price: ethPrice,
-                priceLoading: false,
-                priceError: null,
-              }
+                  ...balance,
+                  price: ethPrice,
+                  priceLoading: false,
+                  priceError: null,
+                }
               : balance
           )
         )
         setLastUpdated(new Date())
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to fetch ETH price"
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch ETH price'
       setBalances((prev) =>
         prev.map((balance) =>
-          balance.symbol === "ETH"
+          balance.symbol === 'ETH'
             ? {
-              ...balance,
-              priceLoading: false,
-              priceError: errorMessage,
-            }
+                ...balance,
+                priceLoading: false,
+                priceError: errorMessage,
+              }
             : balance
         )
       )
-      console.error("Error fetching ETH price:", err)
+      console.error('Error fetching ETH price:', err)
     }
   }, [])
 
@@ -186,5 +192,3 @@ export function useBalances(walletAddress?: string) {
     refetch: fetchEthPrice,
   }
 }
-
-

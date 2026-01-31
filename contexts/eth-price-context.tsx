@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { createContext, useContext, ReactNode } from "react"
-import { useEthPrice } from "@/hooks/use-eth-price"
+import { createContext, useContext, ReactNode } from 'react'
+import { useEthPrice } from '@/hooks/use-eth-price'
 
 interface EthPriceContextType {
   price: number | null
@@ -16,11 +16,7 @@ const EthPriceContext = createContext<EthPriceContextType | undefined>(undefined
 export function EthPriceProvider({ children }: { children: ReactNode }) {
   const ethPriceData = useEthPrice()
 
-  return (
-    <EthPriceContext.Provider value={ethPriceData}>
-      {children}
-    </EthPriceContext.Provider>
-  )
+  return <EthPriceContext.Provider value={ethPriceData}>{children}</EthPriceContext.Provider>
 }
 
 export function useEthPriceContext() {
@@ -38,4 +34,3 @@ export function useEthPriceContext() {
   }
   return context
 }
-

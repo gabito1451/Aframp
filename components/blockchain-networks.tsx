@@ -1,24 +1,36 @@
-"use client"
+'use client'
 
-import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
 
 const networks = [
   {
-    name: "Stellar",
-    description: "Fast, low-cost cross-border payments",
-    token: "XLM",
+    name: 'Stellar',
+    description: 'Fast, low-cost cross-border payments',
+    token: 'XLM',
     icon: (
       <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
-        <path d="M5 8.5L19 15.5M5 15.5L19 8.5" stroke="currentColor" strokeWidth="1.5" className="text-primary" />
+        <circle
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="text-primary"
+        />
+        <path
+          d="M5 8.5L19 15.5M5 15.5L19 8.5"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="text-primary"
+        />
       </svg>
     ),
   },
   {
-    name: "Starknet",
-    description: "Ethereum L2 with zero-knowledge proofs",
-    token: "STRK",
+    name: 'Starknet',
+    description: 'Ethereum L2 with zero-knowledge proofs',
+    token: 'STRK',
     icon: (
       <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -39,9 +51,9 @@ const networks = [
     ),
   },
   {
-    name: "Lightning Network",
-    description: "Instant Bitcoin micropayments",
-    token: "BTC",
+    name: 'Lightning Network',
+    description: 'Instant Bitcoin micropayments',
+    token: 'BTC',
     icon: (
       <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -59,7 +71,7 @@ const networks = [
 
 export function BlockchainNetworks() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section ref={ref} className="py-20 bg-background">
@@ -75,13 +87,13 @@ export function BlockchainNetworks() {
           </span>
           <h2
             className="text-3xl md:text-4xl font-bold text-foreground mb-4"
-            style={{ fontFamily: "var(--font-heading)" }}
+            style={{ fontFamily: 'var(--font-heading)' }}
           >
             Built on the Best Networks
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Aframp leverages multiple blockchain networks to provide you with the fastest, cheapest, and most secure
-            transactions across Africa.
+            Aframp leverages multiple blockchain networks to provide you with the fastest, cheapest,
+            and most secure transactions across Africa.
           </p>
         </motion.div>
 
@@ -99,7 +111,10 @@ export function BlockchainNetworks() {
                   {network.icon}
                 </div>
                 <div className="flex items-center gap-2 mb-2">
-                  <h3 className="text-xl font-semibold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+                  <h3
+                    className="text-xl font-semibold text-foreground"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
                     {network.name}
                   </h3>
                   <span className="px-2 py-0.5 rounded-md bg-primary/10 text-xs font-semibold text-primary">
@@ -121,7 +136,9 @@ export function BlockchainNetworks() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-10 text-center"
         >
-          <p className="text-sm text-muted-foreground">More networks coming soon — Base, Solana, and Polygon</p>
+          <p className="text-sm text-muted-foreground">
+            More networks coming soon — Base, Solana, and Polygon
+          </p>
         </motion.div>
       </div>
     </section>

@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { motion } from "framer-motion"
-import { Wallet, Copy, Check, ExternalLink } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { motion } from 'framer-motion'
+import { Wallet, Copy, Check, ExternalLink } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 
 interface WalletInfoProps {
   walletName: string
@@ -41,12 +41,7 @@ export function WalletInfo({ walletName, walletAddress }: WalletInfoProps) {
               <span className="text-sm text-muted-foreground font-mono">
                 {formatAddress(walletAddress)}
               </span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleCopy}
-                className="h-6 w-6 p-0"
-              >
+              <Button variant="ghost" size="sm" onClick={handleCopy} className="h-6 w-6 p-0">
                 {copied ? (
                   <Check className="w-4 h-4 text-primary" />
                 ) : (
@@ -64,5 +59,3 @@ export function WalletInfo({ walletName, walletAddress }: WalletInfoProps) {
     </motion.div>
   )
 }
-
-

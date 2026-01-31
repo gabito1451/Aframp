@@ -1,18 +1,18 @@
-"use client"
+'use client'
 
-import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
 
 const footerLinks = {
-  Product: ["Buy Crypto", "Pay Bills", "Send Money", "Business", "API"],
-  Resources: ["Documentation", "Help Center", "Blog", "Community", "Status"],
-  Company: ["About", "Careers", "Press", "Partners", "Contact"],
-  Legal: ["Privacy", "Terms", "Security", "Compliance", "Licenses"],
+  Product: ['Buy Crypto', 'Pay Bills', 'Send Money', 'Business', 'API'],
+  Resources: ['Documentation', 'Help Center', 'Blog', 'Community', 'Status'],
+  Company: ['About', 'Careers', 'Press', 'Partners', 'Contact'],
+  Legal: ['Privacy', 'Terms', 'Security', 'Compliance', 'Licenses'],
 }
 
 export function Footer() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-50px" })
+  const isInView = useInView(ref, { once: true, margin: '-50px' })
 
   return (
     <footer ref={ref} className="border-t border-border bg-card">
@@ -32,7 +32,8 @@ export function Footer() {
               <span className="font-semibold text-foreground text-lg">Aframp</span>
             </a>
             <p className="text-sm text-muted-foreground mb-4">
-              Africa's premier cNGN payment platform. Buy crypto, pay bills, grow your business.
+              Africa&apos;s premier cNGN payment platform. Buy crypto, pay bills, grow your
+              business.
             </p>
             {/* CBN Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted border border-border">
@@ -48,7 +49,10 @@ export function Footer() {
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link}>
-                    <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    <a
+                      href="#"
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
                       {link}
                     </a>
                   </li>
@@ -69,13 +73,22 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Aframp Technologies Ltd. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              href="#"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               Twitter
             </a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              href="#"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               LinkedIn
             </a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              href="#"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
               Instagram
             </a>
           </div>

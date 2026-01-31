@@ -1,5 +1,5 @@
-import { Suspense } from "react"
-import { DashboardPageClient } from "@/components/dashboard/dashboard-page-client"
+import { Suspense } from 'react'
+import { DashboardPageClient } from '@/components/dashboard/dashboard-page-client'
 
 interface DashboardPageProps {
   searchParams: Promise<{

@@ -1,4 +1,4 @@
-import ErrorLayout from '@/components/error/ErrorLayout';
+import ErrorLayout from '@/components/error/ErrorLayout'
 
 export default function Unauthorized() {
   return (
@@ -8,5 +8,5 @@ export default function Unauthorized() {
       message="Please log in to continue."
       actions={[{ label: 'Login', href: '/login' }]}
     />
-  );
+  )
 }

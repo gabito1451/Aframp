@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { motion } from "framer-motion"
-import { ArrowLeftRight, ArrowUp, ArrowDown, Zap, Coins, CreditCard } from "lucide-react"
-import { useRouter } from "next/navigation"
-import { cn } from "@/lib/utils"
+import { motion } from 'framer-motion'
+import { ArrowLeftRight, ArrowUp, ArrowDown, Zap, Coins, CreditCard } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { cn } from '@/lib/utils'
 
 interface QuickActionsProps {
   onSwap: () => void
@@ -12,12 +12,12 @@ interface QuickActionsProps {
 }
 
 const actions = [
-  { icon: ArrowLeftRight, label: "Swap", action: "swap", color: "text-blue-500" },
-  { icon: ArrowUp, label: "Send", action: "send", color: "text-green-500" },
-  { icon: ArrowDown, label: "Receive", action: "receive", color: "text-purple-500" },
-  { icon: Zap, label: "Lightning", action: "lightning", color: "text-yellow-500" },
-  { icon: Coins, label: "Onramp", action: "onramp", color: "text-orange-500" },
-  { icon: CreditCard, label: "Pay Bills", action: "bills", color: "text-pink-500" },
+  { icon: ArrowLeftRight, label: 'Swap', action: 'swap', color: 'text-blue-500' },
+  { icon: ArrowUp, label: 'Send', action: 'send', color: 'text-green-500' },
+  { icon: ArrowDown, label: 'Receive', action: 'receive', color: 'text-purple-500' },
+  { icon: Zap, label: 'Lightning', action: 'lightning', color: 'text-yellow-500' },
+  { icon: Coins, label: 'Onramp', action: 'onramp', color: 'text-orange-500' },
+  { icon: CreditCard, label: 'Pay Bills', action: 'bills', color: 'text-pink-500' },
 ] as const
 
 export function QuickActions({ onSwap, onSend, onReceive }: QuickActionsProps) {
@@ -40,15 +40,15 @@ export function QuickActions({ onSwap, onSend, onReceive }: QuickActionsProps) {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => {
-              if (action.action === "swap") onSwap()
-              else if (action.action === "send") onSend()
-              else if (action.action === "receive") onReceive()
-              else if (action.action === "onramp") router.push("/onramp")
-              else if (action.action === "bills") router.push("/bills")
+              if (action.action === 'swap') onSwap()
+              else if (action.action === 'send') onSend()
+              else if (action.action === 'receive') onReceive()
+              else if (action.action === 'onramp') router.push('/onramp')
+              else if (action.action === 'bills') router.push('/bills')
             }}
             className="flex flex-col items-center gap-2 p-4 rounded-xl bg-muted hover:bg-muted/80 transition-colors"
           >
-            <action.icon className={cn("w-6 h-6", action.color)} />
+            <action.icon className={cn('w-6 h-6', action.color)} />
             <span className="text-xs font-medium text-foreground">{action.label}</span>
           </motion.button>
         ))}

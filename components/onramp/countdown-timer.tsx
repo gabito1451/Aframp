@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
-import { Clock } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useEffect, useState } from 'react'
+import { Clock } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface CountdownTimerProps {
   expiresAt: Date
@@ -32,10 +32,9 @@ export function CountdownTimer({ expiresAt, onExpire }: CountdownTimerProps) {
       }
     }
 
-    setTimeLeft(calculateTimeLeft())
-
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft())
+      const newTime = calculateTimeLeft()
+      setTimeLeft(newTime)
     }, 1000)
 
     return () => clearInterval(timer)
@@ -46,12 +45,12 @@ export function CountdownTimer({ expiresAt, onExpire }: CountdownTimerProps) {
   return (
     <div
       className={cn(
-        "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium",
+        'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium',
         isExpired
-          ? "bg-destructive/10 text-destructive"
+          ? 'bg-destructive/10 text-destructive'
           : isUrgent
-            ? "bg-warning/10 text-warning-foreground"
-            : "bg-muted text-muted-foreground"
+            ? 'bg-warning/10 text-warning-foreground'
+            : 'bg-muted text-muted-foreground'
       )}
     >
       <Clock className="h-4 w-4" />
@@ -59,8 +58,8 @@ export function CountdownTimer({ expiresAt, onExpire }: CountdownTimerProps) {
         <span>Expired</span>
       ) : (
         <span>
-          Expires in {String(timeLeft.minutes).padStart(2, "0")}:
-          {String(timeLeft.seconds).padStart(2, "0")}
+          Expires in {String(timeLeft.minutes).padStart(2, '0')}:
+          {String(timeLeft.seconds).padStart(2, '0')}
         </span>
       )}
     </div>

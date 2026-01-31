@@ -1,4 +1,4 @@
-import ErrorLayout from '@/components/error/ErrorLayout';
+import ErrorLayout from '@/components/error/ErrorLayout'
 
 export default function Forbidden() {
   return (
@@ -8,5 +8,5 @@ export default function Forbidden() {
       message="You don’t have permission to view this page."
       actions={[{ label: 'Go Home', href: '/' }]}
     />
-  );
+  )
 }

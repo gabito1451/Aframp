@@ -1,26 +1,17 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
+import { useState } from 'react'
+import { motion } from 'framer-motion'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import {
-  Wallet,
-  Zap,
-  Coins,
-  ExternalLink,
-  CheckCircle2,
-  Loader2,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
-import { useWalletConnect } from "@/hooks/use-wallet-connect"
+} from '@/components/ui/dialog'
+import { Wallet, Zap, Coins, ExternalLink, Loader2 } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { useWalletConnect } from '@/hooks/use-wallet-connect'
 
 // Wallet provider type definitions
 declare global {
@@ -42,7 +33,7 @@ interface WalletOption {
   id: string
   name: string
   icon: React.ReactNode
-  chain: "Ethereum" | "Bitcoin" | "Stellar" | "Lightning"
+  chain: 'Ethereum' | 'Bitcoin' | 'Stellar' | 'Lightning'
   description: string
   popular?: boolean
 }
@@ -50,8 +41,8 @@ interface WalletOption {
 const walletOptions: WalletOption[] = [
   // Ethereum Wallets
   {
-    id: "metamask",
-    name: "MetaMask",
+    id: 'metamask',
+    name: 'MetaMask',
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
         <path
@@ -80,34 +71,26 @@ const walletOptions: WalletOption[] = [
         />
       </svg>
     ),
-    chain: "Ethereum",
-    description: "Connect using MetaMask",
+    chain: 'Ethereum',
+    description: 'Connect using MetaMask',
     popular: true,
   },
   {
-    id: "trust-wallet",
-    name: "Trust Wallet",
+    id: 'trust-wallet',
+    name: 'Trust Wallet',
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
-        <path
-          d="M12 2L2 7l10 5 10-5-10-5z"
-          fill="#3375BB"
-        />
-        <path
-          d="M2 17l10 5 10-5M2 12l10 5 10-5"
-          stroke="#3375BB"
-          strokeWidth="2"
-          fill="none"
-        />
+        <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#3375BB" />
+        <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#3375BB" strokeWidth="2" fill="none" />
       </svg>
     ),
-    chain: "Ethereum",
-    description: "Connect using Trust Wallet",
+    chain: 'Ethereum',
+    description: 'Connect using Trust Wallet',
     popular: true,
   },
   {
-    id: "walletconnect",
-    name: "WalletConnect",
+    id: 'walletconnect',
+    name: 'WalletConnect',
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
         <circle cx="12" cy="12" r="10" fill="#3B99FC" />
@@ -120,99 +103,76 @@ const walletOptions: WalletOption[] = [
         />
       </svg>
     ),
-    chain: "Ethereum",
-    description: "Scan QR code to connect",
+    chain: 'Ethereum',
+    description: 'Scan QR code to connect',
   },
   {
-    id: "coinbase-wallet",
-    name: "Coinbase Wallet",
+    id: 'coinbase-wallet',
+    name: 'Coinbase Wallet',
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
         <rect width="24" height="24" rx="4" fill="#0052FF" />
-        <path
-          d="M12 6v12M6 12h12"
-          stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
+        <path d="M12 6v12M6 12h12" stroke="white" strokeWidth="2" strokeLinecap="round" />
       </svg>
     ),
-    chain: "Ethereum",
-    description: "Connect using Coinbase Wallet",
+    chain: 'Ethereum',
+    description: 'Connect using Coinbase Wallet',
   },
   // Bitcoin Wallets
   {
-    id: "electrum",
-    name: "Electrum",
+    id: 'electrum',
+    name: 'Electrum',
     icon: <Coins className="w-6 h-6 text-orange-500" />,
-    chain: "Bitcoin",
-    description: "Connect using Electrum",
+    chain: 'Bitcoin',
+    description: 'Connect using Electrum',
   },
   {
-    id: "blue-wallet",
-    name: "Blue Wallet",
+    id: 'blue-wallet',
+    name: 'Blue Wallet',
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
         <rect width="24" height="24" rx="4" fill="#4A90E2" />
-        <path
-          d="M12 8v8M8 12h8"
-          stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
+        <path d="M12 8v8M8 12h8" stroke="white" strokeWidth="2" strokeLinecap="round" />
       </svg>
     ),
-    chain: "Bitcoin",
-    description: "Connect using Blue Wallet",
+    chain: 'Bitcoin',
+    description: 'Connect using Blue Wallet',
   },
   {
-    id: "lightning-wallet",
-    name: "Lightning Wallet",
+    id: 'lightning-wallet',
+    name: 'Lightning Wallet',
     icon: <Zap className="w-6 h-6 text-yellow-400" />,
-    chain: "Lightning",
-    description: "Connect using Lightning Network",
+    chain: 'Lightning',
+    description: 'Connect using Lightning Network',
   },
   {
-    id: "phoenix",
-    name: "Phoenix",
+    id: 'phoenix',
+    name: 'Phoenix',
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
-        <path
-          d="M12 2L2 7l10 5 10-5-10-5z"
-          fill="#FF6B35"
-        />
-        <path
-          d="M2 17l10 5 10-5M2 12l10 5 10-5"
-          stroke="#FF6B35"
-          strokeWidth="2"
-          fill="none"
-        />
+        <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#FF6B35" />
+        <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#FF6B35" strokeWidth="2" fill="none" />
       </svg>
     ),
-    chain: "Lightning",
-    description: "Connect using Phoenix Wallet",
+    chain: 'Lightning',
+    description: 'Connect using Phoenix Wallet',
   },
   // Stellar Wallets
   {
-    id: "lobstr",
-    name: "Lobstr",
+    id: 'lobstr',
+    name: 'Lobstr',
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
         <circle cx="12" cy="12" r="10" fill="#7D00FF" />
-        <path
-          d="M12 6v12M6 12h12"
-          stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
+        <path d="M12 6v12M6 12h12" stroke="white" strokeWidth="2" strokeLinecap="round" />
       </svg>
     ),
-    chain: "Stellar",
-    description: "Connect using Lobstr",
+    chain: 'Stellar',
+    description: 'Connect using Lobstr',
   },
   {
-    id: "stellar-xlm",
-    name: "Stellar XLM",
+    id: 'stellar-xlm',
+    name: 'Stellar XLM',
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
         <circle cx="12" cy="12" r="10" fill="#7D00FF" />
@@ -222,8 +182,8 @@ const walletOptions: WalletOption[] = [
         />
       </svg>
     ),
-    chain: "Stellar",
-    description: "Connect using Stellar",
+    chain: 'Stellar',
+    description: 'Connect using Stellar',
   },
 ]
 
@@ -233,16 +193,17 @@ interface WalletConnectModalProps {
 }
 
 export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalProps) {
-  const router = useRouter()
   const { connectWallet, storeAndNavigate } = useWalletConnect()
-  const [selectedChain, setSelectedChain] = useState<"All" | "Ethereum" | "Bitcoin" | "Stellar" | "Lightning">("All")
+  const [selectedChain, setSelectedChain] = useState<
+    'All' | 'Ethereum' | 'Bitcoin' | 'Stellar' | 'Lightning'
+  >('All')
   const [connecting, setConnecting] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const chains = ["All", "Ethereum", "Bitcoin", "Stellar", "Lightning"] as const
+  const chains = ['All', 'Ethereum', 'Bitcoin', 'Stellar', 'Lightning'] as const
 
   const filteredWallets =
-    selectedChain === "All"
+    selectedChain === 'All'
       ? walletOptions
       : walletOptions.filter((wallet) => wallet.chain === selectedChain)
 
@@ -253,16 +214,16 @@ export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalPro
     try {
       const wallet = walletOptions.find((w) => w.id === walletId)
       if (!wallet) {
-        throw new Error("Wallet not found")
+        throw new Error('Wallet not found')
       }
 
       const { address, walletName } = await connectWallet({ id: walletId, name: wallet.name })
       storeAndNavigate(address, walletName)
       onOpenChange(false)
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to connect wallet"
+      const errorMessage = err instanceof Error ? err.message : 'Failed to connect wallet'
       setError(errorMessage)
-      console.error("Wallet connection error:", err)
+      console.error('Wallet connection error:', err)
     } finally {
       setConnecting(null)
     }
@@ -276,9 +237,7 @@ export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalPro
             <Wallet className="w-6 h-6" />
             Connect Wallet
           </DialogTitle>
-          <DialogDescription>
-            Choose a wallet to connect to your account
-          </DialogDescription>
+          <DialogDescription>Choose a wallet to connect to your account</DialogDescription>
         </DialogHeader>
 
         {/* Chain Filter */}
@@ -289,10 +248,10 @@ export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalPro
                 key={chain}
                 onClick={() => setSelectedChain(chain)}
                 className={cn(
-                  "px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all",
+                  'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all',
                   selectedChain === chain
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
                 )}
               >
                 {chain}
@@ -319,8 +278,8 @@ export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalPro
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
-                  "w-full flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:bg-muted/50 transition-all text-left",
-                  connecting === wallet.id && "opacity-50 cursor-not-allowed"
+                  'w-full flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:bg-muted/50 transition-all text-left',
+                  connecting === wallet.id && 'opacity-50 cursor-not-allowed'
                 )}
               >
                 <div className="flex-shrink-0">{wallet.icon}</div>
@@ -333,13 +292,9 @@ export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalPro
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground mt-0.5">
-                    {wallet.description}
-                  </p>
+                  <p className="text-sm text-muted-foreground mt-0.5">{wallet.description}</p>
                   <div className="mt-1">
-                    <span className="text-xs text-muted-foreground">
-                      {wallet.chain}
-                    </span>
+                    <span className="text-xs text-muted-foreground">{wallet.chain}</span>
                   </div>
                 </div>
                 <div className="flex-shrink-0">
@@ -364,7 +319,7 @@ export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalPro
         {/* Footer */}
         <div className="px-6 py-4 border-t border-border bg-muted/30">
           <p className="text-xs text-muted-foreground text-center">
-            New to crypto wallets?{" "}
+            New to crypto wallets?{' '}
             <a
               href="#"
               className="text-primary hover:underline"
@@ -381,4 +336,3 @@ export function WalletConnectModal({ open, onOpenChange }: WalletConnectModalPro
     </Dialog>
   )
 }
-

@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { Home, LogOut } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { EthPriceTicker } from "@/components/dashboard/eth-price-ticker"
-import { BalanceProvider } from "@/contexts/balance-context"
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { Home, LogOut } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/theme-toggle'
+import { EthPriceTicker } from '@/components/dashboard/eth-price-ticker'
+import { BalanceProvider } from '@/contexts/balance-context'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -15,9 +15,9 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children, walletAddress }: DashboardLayoutProps) {
   const handleDisconnect = () => {
-    localStorage.removeItem("walletName")
-    localStorage.removeItem("walletAddress")
-    window.location.href = "/"
+    localStorage.removeItem('walletName')
+    localStorage.removeItem('walletAddress')
+    window.location.href = '/'
   }
 
   return (
@@ -70,4 +70,3 @@ export function DashboardLayout({ children, walletAddress }: DashboardLayoutProp
     </BalanceProvider>
   )
 }
-

@@ -1,54 +1,57 @@
-"use client"
+'use client'
 
-import { useEffect, useState, useCallback } from "react"
-import { useParams, useRouter } from "next/navigation"
-import Link from "next/link"
-import { ArrowLeft, ExternalLink } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { PaymentStatusTracker, type PaymentStatus } from "@/components/onramp/payment-status-tracker"
-import { VirtualAccountDisplay } from "@/components/onramp/virtual-account-display"
-import { PaymentInstructions } from "@/components/onramp/payment-instructions"
-import { CountdownTimer } from "@/components/onramp/countdown-timer"
-import { OrderSummary } from "@/components/onramp/order-summary"
-
-// Mock order data - In production, this would come from an API
-const _mockOrder = {
-  id: "ONR-20260119-A1B2C3",
-  status: "pending" as PaymentStatus,
-  fiatAmount: "50,000.00",
-  fiatAmountRaw: 50000,
-  fiatCurrency: "NGN",
-  cryptoAmount: "31.17",
-  cryptoCurrency: "cNGN",
-  exchangeRate: "1 cNGN = 1,604.11 NGN",
-  fee: "Free",
-  paymentMethod: "Bank Transfer",
-  walletAddress: "GCXKG6RN4ONIEPCMNFB732A436Z5PNDSRLGWK7GBLCMQLIBER4BKXVWBW",
-  virtualAccount: {
-    bankName: "Providus Bank",
-    accountNumber: "9876543210",
-    accountName: "AFRAMP-USER-12345",
-    amount: "₦50,000.00",
-    amountRaw: 50000,
-    reference: "ONR-20260119-A1B2C3",
-    currency: "NGN",
-  },
-  expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes from now
-  createdAt: new Date(),
-}
+import { useEffect, useState, useCallback } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { ArrowLeft, ExternalLink } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  PaymentStatusTracker,
+  type PaymentStatus,
+} from '@/components/onramp/payment-status-tracker'
+import { VirtualAccountDisplay } from '@/components/onramp/virtual-account-display'
+import { PaymentInstructions } from '@/components/onramp/payment-instructions'
+import { CountdownTimer } from '@/components/onramp/countdown-timer'
+import { OrderSummary } from '@/components/onramp/order-summary'
 
 export default function PaymentPage() {
   const params = useParams()
   const router = useRouter()
   const orderId = params.orderId as string
 
-  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>("pending")
+  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>('pending')
   const [isPolling, setIsPolling] = useState(true)
+
+  // Mock order data - In production, this would come from an API
+  const order = {
+    id: orderId,
+    status: 'pending' as PaymentStatus,
+    fiatAmount: '50,000.00',
+    fiatAmountRaw: 50000,
+    fiatCurrency: 'NGN',
+    cryptoAmount: '31.17',
+    cryptoCurrency: 'cNGN',
+    exchangeRate: '1 cNGN = 1,604.11 NGN',
+    fee: 'Free',
+    paymentMethod: 'Bank Transfer',
+    walletAddress: 'GCXKG6RN4ONIEPCMNFB732A436Z5PNDSRLGWK7GBLCMQLIBER4BKXVWBW',
+    virtualAccount: {
+      bankName: 'Providus Bank',
+      accountNumber: '9876543210',
+      accountName: 'AFRAMP-USER-12345',
+      amount: '₦50,000.00',
+      amountRaw: 50000,
+      reference: orderId,
+      currency: 'NGN',
+    },
+    expiresAt: new Date(new Date().getTime() + 30 * 60 * 1000), // 30 minutes from now
+    createdAt: new Date(),
+  }
 
   // Simulate payment detection polling
   useEffect(() => {
-    if (!isPolling || paymentStatus === "confirmed" || paymentStatus === "expired") {
+    if (!isPolling || paymentStatus === 'confirmed' || paymentStatus === 'expired') {
       return
     }
 
@@ -58,13 +61,13 @@ export default function PaymentPage() {
       const elapsedTime = Date.now() - order.createdAt.getTime()
 
       // Simulate payment detection after 15 seconds for demo purposes
-      if (elapsedTime > 15000 && paymentStatus === "pending") {
-        setPaymentStatus("detecting")
+      if (elapsedTime > 15000 && paymentStatus === 'pending') {
+        setPaymentStatus('detecting')
       }
 
       // Simulate confirmation after 20 seconds
-      if (elapsedTime > 20000 && paymentStatus === "detecting") {
-        setPaymentStatus("confirmed")
+      if (elapsedTime > 20000 && paymentStatus === 'detecting') {
+        setPaymentStatus('confirmed')
         setIsPolling(false)
       }
     }, 5000)
@@ -73,13 +76,13 @@ export default function PaymentPage() {
   }, [isPolling, paymentStatus, order.createdAt, orderId, router])
 
   const handleExpire = useCallback(() => {
-    setPaymentStatus("expired")
+    setPaymentStatus('expired')
     setIsPolling(false)
   }, [])
 
   const handleCancelOrder = () => {
     // In production, this would call an API to cancel the order
-    router.push("/onramp")
+    router.push('/onramp')
   }
 
   return (
@@ -119,7 +122,7 @@ export default function PaymentPage() {
         <PaymentStatusTracker status={paymentStatus} />
 
         {/* Virtual Account Details */}
-        {paymentStatus !== "confirmed" && paymentStatus !== "expired" && (
+        {paymentStatus !== 'confirmed' && paymentStatus !== 'expired' && (
           <Card>
             <CardContent className="pt-6">
               <VirtualAccountDisplay account={order.virtualAccount} />
@@ -128,7 +131,7 @@ export default function PaymentPage() {
         )}
 
         {/* Payment Instructions */}
-        {paymentStatus === "pending" && (
+        {paymentStatus === 'pending' && (
           <Card>
             <CardContent className="pt-6">
               <PaymentInstructions
@@ -141,7 +144,7 @@ export default function PaymentPage() {
         )}
 
         {/* Confirmed State */}
-        {paymentStatus === "confirmed" && (
+        {paymentStatus === 'confirmed' && (
           <Card className="border-success/50 bg-success/5">
             <CardContent className="pt-6 text-center">
               <div className="rounded-full bg-success/10 p-4 w-fit mx-auto mb-4">
@@ -168,14 +171,16 @@ export default function PaymentPage() {
         )}
 
         {/* Expired State */}
-        {paymentStatus === "expired" && (
+        {paymentStatus === 'expired' && (
           <Card className="border-destructive/50 bg-destructive/5">
             <CardContent className="pt-6 text-center">
-              <h3 className="text-lg font-semibold text-foreground mb-2">Payment Session Expired</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-2">
+                Payment Session Expired
+              </h3>
               <p className="text-sm text-muted-foreground mb-4">
                 Your payment session has expired. Please create a new order to continue.
               </p>
-              <Button onClick={() => router.push("/onramp")} className="w-full">
+              <Button onClick={() => router.push('/onramp')} className="w-full">
                 Create New Order
               </Button>
             </CardContent>
@@ -183,7 +188,7 @@ export default function PaymentPage() {
         )}
 
         {/* Action Buttons */}
-        {paymentStatus === "pending" && (
+        {paymentStatus === 'pending' && (
           <div className="flex flex-col gap-3">
             <Button variant="outline" className="w-full bg-transparent" asChild>
               <a

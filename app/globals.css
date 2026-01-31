@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -54,9 +54,9 @@
 }
 
 @theme inline {
-  --font-sans: "Manrope", "Manrope Fallback", sans-serif;
-  --font-display: "Cal Sans", "Cal Sans Fallback", sans-serif;
-  --font-heading: "Instrument Sans", "Instrument Sans Fallback", sans-serif;
+  --font-sans: 'Manrope', 'Manrope Fallback', sans-serif;
+  --font-display: 'Cal Sans', 'Cal Sans Fallback', sans-serif;
+  --font-heading: 'Instrument Sans', 'Instrument Sans Fallback', sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -137,10 +137,15 @@
 }
 
 .shimmer-btn::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
   background-size: 200% 100%;
   animation: shimmer 3s ease-in-out infinite;
 }
@@ -222,7 +227,8 @@
 }
 /* Processing page specific animations */
 @keyframes status-pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -293,7 +299,8 @@
 
 /* Success celebration animation */
 @keyframes celebrate {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) rotate(0deg);
   }
   25% {

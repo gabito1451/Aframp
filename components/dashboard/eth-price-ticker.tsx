@@ -1,20 +1,20 @@
-"use client"
+'use client'
 
-import { motion, AnimatePresence } from "framer-motion"
-import { Loader2, RefreshCw } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { useBalanceContext } from "@/contexts/balance-context"
+import { motion, AnimatePresence } from 'framer-motion'
+import { Loader2, RefreshCw } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { useBalanceContext } from '@/contexts/balance-context'
 
 export function EthPriceTicker() {
   const { balances, lastUpdated, refetch } = useBalanceContext()
-  const ethBalance = balances.find((b) => b.symbol === "ETH")
+  const ethBalance = balances.find((b) => b.symbol === 'ETH')
   const price = ethBalance?.price
   const loading = ethBalance?.priceLoading ?? false
   const error = ethBalance?.priceError ?? null
 
-  const formatPrice = (value: number | null) => {
-    if (value === null) return "—"
-    return `$${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+  const formatPrice = (value: number | null | undefined) => {
+    if (value === null || value === undefined) return '—'
+    return `${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
   }
 
   return (
@@ -60,26 +60,25 @@ export function EthPriceTicker() {
           )}
         </AnimatePresence>
       </div>
-      
+
       {lastUpdated && !loading && (
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <RefreshCw className="w-3 h-3" />
           <span>Updated {lastUpdated.toLocaleTimeString()}</span>
         </div>
       )}
-      
+
       <button
         onClick={refetch}
         disabled={loading}
         className={cn(
-          "ml-auto p-1 rounded hover:bg-muted transition-colors",
-          loading && "opacity-50 cursor-not-allowed"
+          'ml-auto p-1 rounded hover:bg-muted transition-colors',
+          loading && 'opacity-50 cursor-not-allowed'
         )}
         title="Refresh price"
       >
-        <RefreshCw className={cn("w-3 h-3 text-muted-foreground", loading && "animate-spin")} />
+        <RefreshCw className={cn('w-3 h-3 text-muted-foreground', loading && 'animate-spin')} />
       </button>
     </motion.div>
   )
 }
-

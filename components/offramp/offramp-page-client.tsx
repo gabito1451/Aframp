@@ -39,7 +39,9 @@ export function OfframpPageClient() {
   )
 
   useEffect(() => {
-    if (rate) setRateOverride(rate)
+    if (rate) {
+      Promise.resolve().then(() => setRateOverride(rate))
+    }
   }, [rate])
 
   useEffect(() => {
@@ -47,7 +49,7 @@ export function OfframpPageClient() {
     if (stored) {
       const parsed = JSON.parse(stored) as { expiresAt: number }
       if (parsed.expiresAt > Date.now()) {
-        setLockExpiresAt(parsed.expiresAt)
+        Promise.resolve().then(() => setLockExpiresAt(parsed.expiresAt))
       }
     }
   }, [])
@@ -56,19 +58,24 @@ export function OfframpPageClient() {
     router.prefetch('/offramp/bank-details')
   }, [router])
 
-  const lockCountdown = useMemo(() => {
-    if (!lockExpiresAt) return null
-    const seconds = Math.max(Math.floor((lockExpiresAt - Date.now()) / 1000), 0)
-    return seconds
-  }, [lockExpiresAt])
+  const [lockCountdownTick, setLockCountdownTick] = useState(0)
 
   useEffect(() => {
     if (!lockExpiresAt) return
-    const timer = setInterval(() => {
-      setLockExpiresAt((prev) => (prev && prev > Date.now() ? prev : null))
+
+    const interval = setInterval(() => {
+      setLockCountdownTick((prev) => prev + 1)
     }, 1000)
-    return () => clearInterval(timer)
+    return () => clearInterval(interval)
   }, [lockExpiresAt])
+
+  const lockCountdown = useMemo(() => {
+    if (!lockExpiresAt) return null
+    const seconds = Math.max(Math.floor((lockExpiresAt - new Date().getTime()) / 1000), 0)
+    return seconds
+  }, [lockExpiresAt, lockCountdownTick])
+
+
 
   const usdEquivalent = useMemo(() => {
     const usdRate = assetUsdRates[selectedAsset.asset]
@@ -182,7 +189,7 @@ export function OfframpPageClient() {
             fiatCurrency={form.state.fiatCurrency}
             rate={rate}
             rateCountdown={countdown}
-            rateUpdatedAt={lastUpdated}
+            rateUpdatedAt={lastUpdated || 0}
             isRateLoading={isLoading}
             fiatAmount={form.fiatAmount}
             usdEquivalent={usdEquivalent}

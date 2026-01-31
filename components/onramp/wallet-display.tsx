@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { useMemo, useState } from "react"
-import { CheckCircle2, Copy, ExternalLink, Wallet } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useMemo, useState } from 'react'
+import { CheckCircle2, Copy, ExternalLink, Wallet } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -10,10 +10,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { cn } from "@/lib/utils"
-import { isValidStellarAddress } from "@/lib/onramp/validation"
-import { truncateAddress } from "@/lib/onramp/formatters"
+} from '@/components/ui/dialog'
+import { cn } from '@/lib/utils'
+import { isValidStellarAddress } from '@/lib/onramp/validation'
+import { truncateAddress } from '@/lib/onramp/formatters'
 
 interface WalletDisplayProps {
   address: string
@@ -32,7 +32,7 @@ export function WalletDisplay({
 }: WalletDisplayProps) {
   const [detailsOpen, setDetailsOpen] = useState(false)
   const [switchOpen, setSwitchOpen] = useState(false)
-  const [newAddress, setNewAddress] = useState("")
+  const [newAddress, setNewAddress] = useState('')
   const [showCopied, setShowCopied] = useState(false)
   const truncated = truncateAddress(address, 5)
 
@@ -51,7 +51,7 @@ export function WalletDisplay({
   const handleAdd = () => {
     if (isValidStellarAddress(newAddress)) {
       onChangeWallet(newAddress)
-      setNewAddress("")
+      setNewAddress('')
       setSwitchOpen(false)
     }
   }
@@ -79,7 +79,7 @@ export function WalletDisplay({
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={handleCopy} aria-label="Copy wallet address">
             <Copy className="h-4 w-4" />
-            {showCopied ? "Copied" : "Copy"}
+            {showCopied ? 'Copied' : 'Copy'}
           </Button>
           <Button variant="ghost" size="sm" onClick={() => setSwitchOpen(true)}>
             Change Wallet
@@ -141,10 +141,10 @@ export function WalletDisplay({
                       setSwitchOpen(false)
                     }}
                     className={cn(
-                      "flex w-full items-center justify-between rounded-xl border px-3 py-2 text-left text-xs",
+                      'flex w-full items-center justify-between rounded-xl border px-3 py-2 text-left text-xs',
                       option === address
-                        ? "border-primary/60 bg-primary/10 text-foreground"
-                        : "border-border text-muted-foreground hover:border-primary/40"
+                        ? 'border-primary/60 bg-primary/10 text-foreground'
+                        : 'border-border text-muted-foreground hover:border-primary/40'
                     )}
                   >
                     <span className="truncate">{truncateAddress(option, 6)}</span>

@@ -1,4 +1,4 @@
-import type { FiatCurrency, PaymentMethod } from "@/types/onramp"
+import type { FiatCurrency, PaymentMethod } from '@/types/onramp'
 
 const networkFeeMap: Record<FiatCurrency, number> = {
   NGN: 0.15,
@@ -11,9 +11,9 @@ const networkFeeMap: Record<FiatCurrency, number> = {
 export function calculateProcessingFee(amount: number, method: PaymentMethod) {
   if (!amount || amount <= 0) return 0
   switch (method) {
-    case "card":
+    case 'card':
       return amount * 0.015
-    case "mobile_money":
+    case 'mobile_money':
       return amount * 0.005
     default:
       return 0
@@ -29,7 +29,11 @@ export function calculateCryptoAmount(amount: number, rate: number) {
   return amount * rate
 }
 
-export function calculateFeeBreakdown(amount: number, currency: FiatCurrency, method: PaymentMethod) {
+export function calculateFeeBreakdown(
+  amount: number,
+  currency: FiatCurrency,
+  method: PaymentMethod
+) {
   const processingFee = calculateProcessingFee(amount, method)
   const networkFee = calculateNetworkFee(currency)
   const totalFees = processingFee + networkFee

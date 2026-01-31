@@ -1,5 +1,5 @@
-import type { FiatCurrency } from "@/types/onramp"
-import type { OfframpFeeBreakdown } from "@/types/offramp"
+import type { FiatCurrency } from '@/types/onramp'
+import type { OfframpFeeBreakdown } from '@/types/offramp'
 
 const networkFeeMap: Record<string, number> = {
   Stellar: 15,
@@ -35,7 +35,7 @@ export function calculateFees(
 
 export function getMinMax(currency: FiatCurrency) {
   return {
-    min: currency === "NGN" ? 5000 : 5000,
-    max: currency === "NGN" ? 5000000 : 5000000,
+    min: currency === 'NGN' ? 5000 : 5000,
+    max: currency === 'NGN' ? 5000000 : 5000000,
   }
 }

@@ -1,4 +1,4 @@
-import { OnrampOrder } from "@/types/onramp"
+import { OnrampOrder } from '@/types/onramp'
 
 export interface NotificationData {
   orderId: string
@@ -13,11 +13,11 @@ export interface NotificationData {
 export function sendEmailNotification(type: string, data: NotificationData): Promise<void> {
   // This would integrate with your email service (SendGrid, Resend, etc.)
   const { subject, message } = getDetailedNotificationMessage(type, data)
-  
+
   console.warn(`Email notification: ${type}`)
   console.warn(`Subject: ${subject}`)
   console.warn(`Message: ${message}`)
-  
+
   // Simulate API call to email service
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -30,10 +30,10 @@ export function sendEmailNotification(type: string, data: NotificationData): Pro
 export function sendSMSNotification(type: string, data: NotificationData): Promise<void> {
   // This would integrate with Twilio or similar SMS service
   const { message } = getDetailedNotificationMessage(type, data)
-  
+
   console.warn(`SMS notification: ${type}`)
   console.warn(`Message: ${message.substring(0, 160)}...`) // SMS character limit
-  
+
   // Simulate API call to SMS service
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -43,11 +43,14 @@ export function sendSMSNotification(type: string, data: NotificationData): Promi
   })
 }
 
-function getDetailedNotificationMessage(type: string, data: NotificationData): { subject: string; message: string } {
+function getDetailedNotificationMessage(
+  type: string,
+  data: NotificationData
+): { subject: string; message: string } {
   const { orderId, status, amount, currency, cryptoAmount, cryptoAsset, transactionHash } = data
 
   switch (type) {
-    case "order_created":
+    case 'order_created':
       return {
         subject: `AFRAMP Order Created - #${orderId.slice(-8).toUpperCase()}`,
         message: `Your order #ONR-${orderId.slice(-8).toUpperCase()} is waiting for payment. 
@@ -58,10 +61,10 @@ Status: ${status.toUpperCase()}
 
 Complete your payment to receive your ${cryptoAsset} tokens.
 
-View order: https://aframp.com/onramp/payment?order=${orderId}`
+View order: https://aframp.com/onramp/payment?order=${orderId}`,
       }
 
-    case "payment_received":
+    case 'payment_received':
       return {
         subject: `Payment Confirmed - Processing Your ${cryptoAsset}`,
         message: `Payment confirmed! Processing your ${cryptoAmount?.toFixed(2)} ${cryptoAsset}.
@@ -70,10 +73,10 @@ Order: #ONR-${orderId.slice(-8).toUpperCase()}
 Amount Paid: ${amount?.toLocaleString()} ${currency}
 Status: Processing
 
-Your ${cryptoAsset} will be sent to your wallet shortly.`
+Your ${cryptoAsset} will be sent to your wallet shortly.`,
       }
 
-    case "transfer_complete":
+    case 'transfer_complete':
       return {
         subject: `🎉 Transaction Complete - ${cryptoAmount?.toFixed(2)} ${cryptoAsset} Received!`,
         message: `Congratulations! Your transaction is complete.
@@ -86,10 +89,10 @@ Your ${cryptoAsset} will be sent to your wallet shortly.`
 View on Stellar Explorer: https://stellar.expert/explorer/public/tx/${transactionHash}
 Download receipt: https://aframp.com/onramp/success?order=${orderId}
 
-Thank you for using AFRAMP!`
+Thank you for using AFRAMP!`,
       }
 
-    case "transaction_failed":
+    case 'transaction_failed':
       return {
         subject: `Transaction Failed - Order #${orderId.slice(-8).toUpperCase()}`,
         message: `We encountered an issue processing your transaction.
@@ -102,29 +105,29 @@ Please contact our support team for assistance:
 Email: support@aframp.com
 Include your order ID in your message.
 
-We apologize for the inconvenience.`
+We apologize for the inconvenience.`,
       }
 
     default:
       return {
         subject: `AFRAMP Order Update - #${orderId.slice(-8).toUpperCase()}`,
-        message: `Your order status has been updated to: ${status.toUpperCase()}`
+        message: `Your order status has been updated to: ${status.toUpperCase()}`,
       }
   }
 }
 
 export function getNotificationMessage(type: string, order: OnrampOrder): string {
   switch (type) {
-    case "order_created":
+    case 'order_created':
       return `Your order #${order.id.slice(-8).toUpperCase()} is waiting for payment`
-    case "payment_received":
+    case 'payment_received':
       return `Payment confirmed! Processing your ${order.cryptoAsset}`
-    case "transfer_complete":
+    case 'transfer_complete':
       return `${order.cryptoAmount.toFixed(2)} ${order.cryptoAsset} sent to your wallet`
-    case "transaction_failed":
+    case 'transaction_failed':
       return `Payment issue with order #${order.id.slice(-8).toUpperCase()} - contact support`
     default:
-      return "AFRAMP transaction update"
+      return 'AFRAMP transaction update'
   }
 }
 
@@ -136,7 +139,7 @@ export async function notifyOrderUpdate(order: OnrampOrder, type: string) {
     currency: order.fiatCurrency,
     cryptoAmount: order.cryptoAmount,
     cryptoAsset: order.cryptoAsset,
-    transactionHash: order.transactionHash
+    transactionHash: order.transactionHash,
   }
 
   try {
@@ -146,6 +149,6 @@ export async function notifyOrderUpdate(order: OnrampOrder, type: string) {
       // sendSMSNotification(type, data)
     ])
   } catch (error) {
-    console.error("Failed to send notifications:", error)
+    console.error('Failed to send notifications:', error)
   }
 }

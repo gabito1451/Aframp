@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback } from 'react'
 
 interface EthSymbol {
   symbol: string
@@ -28,14 +28,14 @@ export function useEthPrice() {
     try {
       setLoading(true)
       setError(null)
-      
-      const response = await fetch("https://kelly-musk.up.railway.app/api/eth-price", {
-        method: "GET",
+
+      const response = await fetch('https://kelly-musk.up.railway.app/api/eth-price', {
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         // Add cache control to prevent stale data
-        cache: "no-store",
+        cache: 'no-store',
       })
 
       if (!response.ok) {
@@ -43,32 +43,38 @@ export function useEthPrice() {
       }
 
       const data: EthPriceResponse = await response.json()
-      
+
       // Filter and extract price from JSON response
       // The API returns: { status: "success", symbols: [{ symbol: "ETH", last: "3204.27", ... }] }
       let ethPrice: number | null = null
-      
-      if (data.status === "success" && data.symbols && Array.isArray(data.symbols) && data.symbols.length > 0) {
-        const ethSymbol = data.symbols.find((s) => s.symbol === "ETH") || data.symbols[0]
-        
+
+      if (
+        data.status === 'success' &&
+        data.symbols &&
+        Array.isArray(data.symbols) &&
+        data.symbols.length > 0
+      ) {
+        const ethSymbol = data.symbols.find((s) => s.symbol === 'ETH') || data.symbols[0]
+
         if (ethSymbol && ethSymbol.last !== undefined) {
           // Convert to number if it's a string
-          ethPrice = typeof ethSymbol.last === "string" ? parseFloat(ethSymbol.last) : ethSymbol.last
+          ethPrice =
+            typeof ethSymbol.last === 'string' ? parseFloat(ethSymbol.last) : ethSymbol.last
         }
       }
 
       if (ethPrice === null || isNaN(ethPrice)) {
-        throw new Error("Invalid API response format: price not found")
+        throw new Error('Invalid API response format: price not found')
       }
 
       setPrice(ethPrice)
       setLastUpdated(new Date())
       setLoading(false)
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to fetch ETH price"
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch ETH price'
       setError(errorMessage)
       setLoading(false)
-      console.error("Error fetching ETH price:", err)
+      console.error('Error fetching ETH price:', err)
     }
   }, [])
 
@@ -93,4 +99,3 @@ export function useEthPrice() {
     refetch: fetchEthPrice,
   }
 }
-
