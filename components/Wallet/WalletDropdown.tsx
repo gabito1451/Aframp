@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { ReactNode } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { ReactNode } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,17 +9,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  Copy,
-  ExternalLink,
-  LogOut,
-  RefreshCw,
-  Wallet,
-  CheckCircle2,
-} from "lucide-react"
-import { useWallet } from "@/hooks/useWallet"
-import { useState } from "react"
+} from '@/components/ui/dropdown-menu'
+import { Copy, ExternalLink, LogOut, RefreshCw, Wallet, CheckCircle2 } from 'lucide-react'
+import { useWallet } from '@/hooks/useWallet'
+import { useState } from 'react'
 
 interface WalletDropdownProps {
   children: ReactNode
@@ -27,11 +20,7 @@ interface WalletDropdownProps {
   onOpenChange: (open: boolean) => void
 }
 
-export function WalletDropdown({
-  children,
-  open,
-  onOpenChange,
-}: WalletDropdownProps) {
+export function WalletDropdown({ children, open, onOpenChange }: WalletDropdownProps) {
   const {
     publicKey,
     formattedAddress,
@@ -47,22 +36,22 @@ export function WalletDropdown({
 
   const handleCopy = async () => {
     if (!publicKey) return
-    
+
     try {
       await navigator.clipboard.writeText(publicKey)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (error) {
-      console.error("Failed to copy:", error)
+      console.error('Failed to copy:', error)
     }
   }
 
   const handleViewExplorer = () => {
     if (!publicKey) return
     const baseUrl = isMainnet
-      ? "https://stellar.expert/explorer/public/account"
-      : "https://stellar.expert/explorer/testnet/account"
-    window.open(`${baseUrl}/${publicKey}`, "_blank")
+      ? 'https://stellar.expert/explorer/public/account'
+      : 'https://stellar.expert/explorer/testnet/account'
+    window.open(`${baseUrl}/${publicKey}`, '_blank')
   }
 
   const handleDisconnect = () => {
@@ -77,8 +66,8 @@ export function WalletDropdown({
   // Format balance for display
   const formatBalance = (balance: string): string => {
     const num = parseFloat(balance)
-    if (num === 0) return "0"
-    if (num < 0.0001) return "<0.0001"
+    if (num === 0) return '0'
+    if (num < 0.0001) return '<0.0001'
     if (num >= 1000000) return `${(num / 1000000).toFixed(2)}M`
     if (num >= 1000) return `${(num / 1000).toFixed(2)}K`
     return num.toFixed(4)
@@ -98,7 +87,7 @@ export function WalletDropdown({
               <div>
                 <p className="font-mono text-sm">{formattedAddress}</p>
                 <p className="text-xs text-muted-foreground font-normal">
-                  {network === "PUBLIC" ? "Mainnet" : network || "Unknown"}
+                  {network === 'PUBLIC' ? 'Mainnet' : network || 'Unknown'}
                 </p>
               </div>
             </div>
@@ -115,17 +104,13 @@ export function WalletDropdown({
         {/* Balances */}
         <div className="px-2 py-2">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-muted-foreground font-medium">
-              Balances
-            </span>
+            <span className="text-xs text-muted-foreground font-medium">Balances</span>
             <button
               onClick={handleRefresh}
               disabled={balancesLoading}
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
-              <RefreshCw
-                className={`w-3 h-3 ${balancesLoading ? "animate-spin" : ""}`}
-              />
+              <RefreshCw className={`w-3 h-3 ${balancesLoading ? 'animate-spin' : ''}`} />
             </button>
           </div>
           <div className="space-y-1 max-h-32 overflow-y-auto">
@@ -133,7 +118,7 @@ export function WalletDropdown({
               {balances.length > 0 ? (
                 balances.slice(0, 5).map((bal, index) => (
                   <motion.div
-                    key={`${bal.asset}-${bal.issuer || "native"}`}
+                    key={`${bal.asset}-${bal.issuer || 'native'}`}
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
@@ -147,7 +132,7 @@ export function WalletDropdown({
                 ))
               ) : (
                 <div className="text-center py-2 text-sm text-muted-foreground">
-                  {balancesLoading ? "Loading..." : "No balances found"}
+                  {balancesLoading ? 'Loading...' : 'No balances found'}
                 </div>
               )}
             </AnimatePresence>

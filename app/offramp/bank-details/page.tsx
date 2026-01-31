@@ -139,11 +139,13 @@ export default function OfframpBankDetailsPage() {
         {/* Security Badge Footer */}
         <div className="mt-12 flex flex-col items-center gap-6">
           <div className="flex items-center gap-8 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://nigerianbanks.xyz/logo/paystack.png"
               className="h-5 object-contain"
               alt="Paystack"
             />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://nigerianbanks.xyz/logo/flutterwave.png"
               className="h-5 object-contain"

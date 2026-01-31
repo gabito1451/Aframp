@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   isConnected,
@@ -8,9 +8,9 @@ import {
   getAddress,
   getNetwork,
   signTransaction,
-} from "@stellar/freighter-api"
+} from '@stellar/freighter-api'
 
-export type FreighterNetwork = "PUBLIC" | "TESTNET" | "FUTURENET" | "STANDALONE"
+export type FreighterNetwork = 'PUBLIC' | 'TESTNET' | 'FUTURENET' | 'STANDALONE'
 
 export interface FreighterStatus {
   isInstalled: boolean
@@ -67,12 +67,12 @@ export async function requestFreighterAccess(): Promise<string | null> {
     }
     const accessReq = await requestAccess()
     if (accessReq.error) {
-      console.error("Freighter access error:", accessReq.error)
+      console.error('Freighter access error:', accessReq.error)
       return null
     }
     return accessReq.address
   } catch (error) {
-    console.error("Freighter access request failed:", error)
+    console.error('Freighter access request failed:', error)
     return null
   }
 }
@@ -112,7 +112,7 @@ export async function getFreighterNetwork(): Promise<FreighterNetwork | null> {
  */
 export async function getFreighterStatus(): Promise<FreighterStatus> {
   const isInstalledResult = await checkFreighterInstalled()
-  
+
   if (!isInstalledResult) {
     return {
       isInstalled: false,
@@ -143,7 +143,7 @@ export async function getFreighterStatus(): Promise<FreighterStatus> {
  */
 export async function signTransactionWithFreighter(
   xdr: string,
-  network: FreighterNetwork = "PUBLIC",
+  network: FreighterNetwork = 'PUBLIC',
   networkPassphrase?: string
 ): Promise<SignTransactionResult> {
   try {
@@ -154,8 +154,8 @@ export async function signTransactionWithFreighter(
     })
     if (result.error) {
       return {
-        signedTxXdr: "",
-        error: result.error.message || "Failed to sign transaction",
+        signedTxXdr: '',
+        error: result.error.message || 'Failed to sign transaction',
       }
     }
     return {
@@ -164,8 +164,8 @@ export async function signTransactionWithFreighter(
     }
   } catch (error) {
     return {
-      signedTxXdr: "",
-      error: error instanceof Error ? error.message : "Failed to sign transaction",
+      signedTxXdr: '',
+      error: error instanceof Error ? error.message : 'Failed to sign transaction',
     }
   }
 }
@@ -175,14 +175,14 @@ export async function signTransactionWithFreighter(
  */
 function getNetworkPassphrase(network: FreighterNetwork): string {
   switch (network) {
-    case "PUBLIC":
-      return "Public Global Stellar Network ; September 2015"
-    case "TESTNET":
-      return "Test SDF Network ; September 2015"
-    case "FUTURENET":
-      return "Test SDF Future Network ; October 2022"
+    case 'PUBLIC':
+      return 'Public Global Stellar Network ; September 2015'
+    case 'TESTNET':
+      return 'Test SDF Network ; September 2015'
+    case 'FUTURENET':
+      return 'Test SDF Future Network ; October 2022'
     default:
-      return "Public Global Stellar Network ; September 2015"
+      return 'Public Global Stellar Network ; September 2015'
   }
 }
 
@@ -191,19 +191,18 @@ function getNetworkPassphrase(network: FreighterNetwork): string {
  */
 export async function fetchStellarBalances(
   publicKey: string,
-  network: FreighterNetwork = "PUBLIC"
+  network: FreighterNetwork = 'PUBLIC'
 ): Promise<AssetBalance[]> {
-  const horizonUrl = network === "TESTNET" 
-    ? "https://horizon-testnet.stellar.org"
-    : "https://horizon.stellar.org"
+  const horizonUrl =
+    network === 'TESTNET' ? 'https://horizon-testnet.stellar.org' : 'https://horizon.stellar.org'
 
   try {
     const response = await fetch(`${horizonUrl}/accounts/${publicKey}`)
-    
+
     if (!response.ok) {
       if (response.status === 404) {
         // Account not funded
-        return [{ asset: "XLM", balance: "0" }]
+        return [{ asset: 'XLM', balance: '0' }]
       }
       throw new Error(`Failed to fetch account: ${response.status}`)
     }
@@ -212,8 +211,8 @@ export async function fetchStellarBalances(
     const balances: AssetBalance[] = []
 
     for (const bal of account.balances) {
-      if (bal.asset_type === "native") {
-        balances.push({ asset: "XLM", balance: bal.balance })
+      if (bal.asset_type === 'native') {
+        balances.push({ asset: 'XLM', balance: bal.balance })
       } else {
         balances.push({
           asset: bal.asset_code,
@@ -225,8 +224,8 @@ export async function fetchStellarBalances(
 
     return balances
   } catch (error) {
-    console.error("Failed to fetch balances:", error)
-    return [{ asset: "XLM", balance: "0" }]
+    console.error('Failed to fetch balances:', error)
+    return [{ asset: 'XLM', balance: '0' }]
   }
 }
 

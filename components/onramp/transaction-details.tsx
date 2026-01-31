@@ -1,49 +1,49 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { ExternalLink, AlertTriangle, Info } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Badge } from "@/components/ui/badge"
-import type { OnrampOrder } from "@/types/onramp"
+import { useState } from 'react'
+import { ExternalLink, AlertTriangle, Info } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Badge } from '@/components/ui/badge'
+import type { OnrampOrder } from '@/types/onramp'
 
 interface TransactionDetailsProps {
   order: OnrampOrder
 }
 
-const STELLAR_EXPLORER_BASE = "https://stellar.expert/explorer/public"
+const STELLAR_EXPLORER_BASE = 'https://stellar.expert/explorer/public'
 
 export function TransactionDetails({ order }: TransactionDetailsProps) {
   const getNetworkInfo = (cryptoAsset: string) => {
     switch (cryptoAsset) {
-      case "cNGN":
+      case 'cNGN':
         return {
-          network: "Stellar",
-          issuer: "GCKFBEIYTKP74Q7PKL4EQBLS7BQBRC5XVQHQHQHQHQHQHQHQHQHQHQHQ", // Mock issuer
-          assetCode: "cNGN",
-          description: "Nigerian Naira stablecoin on Stellar"
+          network: 'Stellar',
+          issuer: 'GCKFBEIYTKP74Q7PKL4EQBLS7BQBRC5XVQHQHQHQHQHQHQHQHQHQHQHQ', // Mock issuer
+          assetCode: 'cNGN',
+          description: 'Nigerian Naira stablecoin on Stellar',
         }
-      case "cKES":
+      case 'cKES':
         return {
-          network: "Stellar", 
-          issuer: "GDKFBEIYTKP74Q7PKL4EQBLS7BQBRC5XVQHQHQHQHQHQHQHQHQHQHQHQ", // Mock issuer
-          assetCode: "cKES",
-          description: "Kenyan Shilling stablecoin on Stellar"
+          network: 'Stellar',
+          issuer: 'GDKFBEIYTKP74Q7PKL4EQBLS7BQBRC5XVQHQHQHQHQHQHQHQHQHQHQHQ', // Mock issuer
+          assetCode: 'cKES',
+          description: 'Kenyan Shilling stablecoin on Stellar',
         }
-      case "USDC":
+      case 'USDC':
         return {
-          network: "Stellar",
-          issuer: "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN", // Real USDC issuer
-          assetCode: "USDC",
-          description: "USD Coin on Stellar"
+          network: 'Stellar',
+          issuer: 'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN', // Real USDC issuer
+          assetCode: 'USDC',
+          description: 'USD Coin on Stellar',
         }
       default:
         return {
-          network: "Stellar",
-          issuer: "Unknown",
+          network: 'Stellar',
+          issuer: 'Unknown',
           assetCode: cryptoAsset,
-          description: `${cryptoAsset} on Stellar`
+          description: `${cryptoAsset} on Stellar`,
         }
     }
   }
@@ -67,11 +67,9 @@ export function TransactionDetails({ order }: TransactionDetailsProps) {
             <div>
               <p className="text-sm text-muted-foreground">Asset</p>
               <p className="font-semibold">{networkInfo.assetCode}</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                {networkInfo.description}
-              </p>
+              <p className="text-xs text-muted-foreground mt-1">{networkInfo.description}</p>
             </div>
-            
+
             <div>
               <p className="text-sm text-muted-foreground">Issuer</p>
               <div className="flex items-center gap-2">
@@ -81,8 +79,8 @@ export function TransactionDetails({ order }: TransactionDetailsProps) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => 
-                    window.open(`${STELLAR_EXPLORER_BASE}/account/${networkInfo.issuer}`, "_blank")
+                  onClick={() =>
+                    window.open(`${STELLAR_EXPLORER_BASE}/account/${networkInfo.issuer}`, '_blank')
                   }
                   className="h-6 w-6 p-0"
                 >
@@ -101,8 +99,8 @@ export function TransactionDetails({ order }: TransactionDetailsProps) {
                   Required to receive {networkInfo.assetCode}
                 </p>
               </div>
-              <Badge variant={hasTrustline ? "default" : "secondary"}>
-                {hasTrustline ? "✓ Established" : "⏳ Checking"}
+              <Badge variant={hasTrustline ? 'default' : 'secondary'}>
+                {hasTrustline ? '✓ Established' : '⏳ Checking'}
               </Badge>
             </div>
           </div>
@@ -119,14 +117,12 @@ export function TransactionDetails({ order }: TransactionDetailsProps) {
             <div>
               <p className="text-sm text-muted-foreground mb-2">Transaction Hash</p>
               <div className="flex items-center gap-2 p-3 bg-muted/20 rounded-lg">
-                <code className="text-sm flex-1 break-all">
-                  {order.transactionHash}
-                </code>
+                <code className="text-sm flex-1 break-all">{order.transactionHash}</code>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => 
-                    window.open(`${STELLAR_EXPLORER_BASE}/tx/${order.transactionHash}`, "_blank")
+                  onClick={() =>
+                    window.open(`${STELLAR_EXPLORER_BASE}/tx/${order.transactionHash}`, '_blank')
                   }
                 >
                   <ExternalLink className="mr-1 h-4 w-4" />
@@ -143,7 +139,7 @@ export function TransactionDetails({ order }: TransactionDetailsProps) {
               <div>
                 <p className="text-muted-foreground">Confirmations</p>
                 <p className="font-medium">
-                  {order.status === "completed" ? "Confirmed" : "Pending"}
+                  {order.status === 'completed' ? 'Confirmed' : 'Pending'}
                 </p>
               </div>
             </div>
@@ -163,8 +159,8 @@ export function TransactionDetails({ order }: TransactionDetailsProps) {
           <Alert>
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription className="text-sm">
-              <strong>Security Notice:</strong> Never share your private keys or seed phrase. 
-              Aframp will never ask for this information.
+              <strong>Security Notice:</strong> Never share your private keys or seed phrase. Aframp
+              will never ask for this information.
             </AlertDescription>
           </Alert>
 
@@ -192,12 +188,9 @@ export function TransactionDetails({ order }: TransactionDetailsProps) {
             <div>
               <h4 className="font-medium mb-2">Need Help?</h4>
               <p className="text-muted-foreground">
-                If your transaction is taking longer than expected or you have questions, 
-                contact our support team at{" "}
-                <a 
-                  href="mailto:support@aframp.com" 
-                  className="text-primary hover:underline"
-                >
+                If your transaction is taking longer than expected or you have questions, contact
+                our support team at{' '}
+                <a href="mailto:support@aframp.com" className="text-primary hover:underline">
                   support@aframp.com
                 </a>
               </p>

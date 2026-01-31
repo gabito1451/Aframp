@@ -1,32 +1,32 @@
-"use client"
+'use client'
 
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { ArrowLeft, RefreshCw } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
-import { useOrderTracking } from "@/hooks/use-order-tracking"
-import { useOrderStatusUpdates } from "@/hooks/use-order-status-updates"
-import { StatusTimeline } from "@/components/onramp/status-timeline"
-import { OrderSummaryCard } from "@/components/onramp/order-summary-card"
-import { TransactionDetails } from "@/components/onramp/transaction-details"
-import { ProcessingTestUtils } from "@/components/onramp/processing-test-utils"
-import { formatCurrency, formatNumber } from "@/lib/onramp/formatters"
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { ArrowLeft, RefreshCw } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { Badge } from '@/components/ui/badge'
+import { useOrderTracking } from '@/hooks/use-order-tracking'
+import { useOrderStatusUpdates } from '@/hooks/use-order-status-updates'
+import { StatusTimeline } from '@/components/onramp/status-timeline'
+import { OrderSummaryCard } from '@/components/onramp/order-summary-card'
+import { TransactionDetails } from '@/components/onramp/transaction-details'
+import { ProcessingTestUtils } from '@/components/onramp/processing-test-utils'
+import { formatCurrency, formatNumber } from '@/lib/onramp/formatters'
 
 interface OnrampProcessingClientProps {
   orderId: string
 }
 
 const STATUS_MESSAGES = {
-  created: "Order created, awaiting payment confirmation",
-  awaiting_payment: "Waiting for payment confirmation",
-  payment_received: "Payment confirmed! Converting to crypto",
-  minting: "Minting stablecoin on Stellar network",
-  transferring: "Transferring to your wallet",
-  completed: "Transaction completed successfully!",
-  failed: "Transaction failed. Please contact support.",
+  created: 'Order created, awaiting payment confirmation',
+  awaiting_payment: 'Waiting for payment confirmation',
+  payment_received: 'Payment confirmed! Converting to crypto',
+  minting: 'Minting stablecoin on Stellar network',
+  transferring: 'Transferring to your wallet',
+  completed: 'Transaction completed successfully!',
+  failed: 'Transaction failed. Please contact support.',
 } as const
 
 const STATUS_PROGRESS = {
@@ -42,7 +42,7 @@ const STATUS_PROGRESS = {
 export function OnrampProcessingClient({ orderId }: OnrampProcessingClientProps) {
   const router = useRouter()
   const { order, loading, error, updateOrderStatus } = useOrderTracking(orderId)
-  
+
   // Custom hook for real-time status updates
   useOrderStatusUpdates(orderId, updateOrderStatus)
 
@@ -69,9 +69,9 @@ export function OnrampProcessingClient({ orderId }: OnrampProcessingClientProps)
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-muted-foreground mb-4">
-                {error || "The order you&apos;re looking for doesn&apos;t exist."}
+                {error || 'The order you&apos;re looking for doesn&apos;t exist.'}
               </p>
-              <Button onClick={() => router.push("/onramp")} className="w-full">
+              <Button onClick={() => router.push('/onramp')} className="w-full">
                 Start New Order
               </Button>
             </CardContent>
@@ -82,8 +82,8 @@ export function OnrampProcessingClient({ orderId }: OnrampProcessingClientProps)
   }
 
   const progress = STATUS_PROGRESS[order.status]
-  const isCompleted = order.status === "completed"
-  const isFailed = order.status === "failed"
+  const isCompleted = order.status === 'completed'
+  const isFailed = order.status === 'failed'
 
   return (
     <div className="min-h-screen bg-background">
@@ -94,7 +94,7 @@ export function OnrampProcessingClient({ orderId }: OnrampProcessingClientProps)
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => router.push("/onramp")}
+              onClick={() => router.push('/onramp')}
               className="flex items-center gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -105,7 +105,7 @@ export function OnrampProcessingClient({ orderId }: OnrampProcessingClientProps)
               <p className="text-sm text-muted-foreground">Order #{orderId.slice(-8)}</p>
             </div>
           </div>
-          
+
           <Link href="/" className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-base">A</span>
@@ -122,11 +122,11 @@ export function OnrampProcessingClient({ orderId }: OnrampProcessingClientProps)
             <CardHeader className="pb-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <Badge 
-                    variant={isCompleted ? "default" : isFailed ? "destructive" : "secondary"}
+                  <Badge
+                    variant={isCompleted ? 'default' : isFailed ? 'destructive' : 'secondary'}
                     className="px-3 py-1"
                   >
-                    {order.status.replace("_", " ").toUpperCase()}
+                    {order.status.replace('_', ' ').toUpperCase()}
                   </Badge>
                   {!isCompleted && !isFailed && (
                     <RefreshCw className="h-4 w-4 animate-spin text-muted-foreground" />
@@ -173,11 +173,8 @@ export function OnrampProcessingClient({ orderId }: OnrampProcessingClientProps)
           <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
             {/* Status Timeline */}
             <div className="space-y-6 order-2 lg:order-1">
-              <StatusTimeline 
-                order={order}
-                currentStatus={order.status}
-              />
-              
+              <StatusTimeline order={order} currentStatus={order.status} />
+
               {/* Transaction Details */}
               <TransactionDetails order={order} />
             </div>
@@ -186,7 +183,7 @@ export function OnrampProcessingClient({ orderId }: OnrampProcessingClientProps)
             <div className="space-y-6 order-1 lg:order-2">
               <div className="sticky top-24 space-y-6">
                 <OrderSummaryCard order={order} />
-                
+
                 {/* Success page button - shows when transaction is complete */}
                 {isCompleted && (
                   <Button
@@ -197,19 +194,16 @@ export function OnrampProcessingClient({ orderId }: OnrampProcessingClientProps)
                   </Button>
                 )}
               </div>
-              
+
               {/* Failed state actions */}
               {isFailed && (
                 <div className="space-y-3">
-                  <Button
-                    onClick={() => router.push("/onramp")}
-                    className="w-full"
-                  >
+                  <Button onClick={() => router.push('/onramp')} className="w-full">
                     Try Again
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() => window.open("mailto:support@aframp.com", "_blank")}
+                    onClick={() => window.open('mailto:support@aframp.com', '_blank')}
                     className="w-full"
                   >
                     Contact Support

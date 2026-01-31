@@ -1,9 +1,8 @@
-"use client"
+'use client'
 
-import { useEffect, useCallback } from "react"
-import { useWalletStore, startBalanceRefresh, stopBalanceRefresh } from "@/lib/wallet/walletStore"
-import { formatStellarAddress, signTransactionWithFreighter } from "@/lib/wallet/freighter"
-import type { FreighterNetwork } from "@/lib/wallet/freighter"
+import { useEffect, useCallback } from 'react'
+import { useWalletStore, startBalanceRefresh, stopBalanceRefresh } from '@/lib/wallet/walletStore'
+import { formatStellarAddress, signTransactionWithFreighter } from '@/lib/wallet/freighter'
 
 export function useWallet() {
   const {
@@ -31,7 +30,7 @@ export function useWallet() {
 
   // Start/stop balance refresh based on connection state
   useEffect(() => {
-    if (state === "connected") {
+    if (state === 'connected') {
       startBalanceRefresh()
     } else {
       stopBalanceRefresh()
@@ -47,11 +46,11 @@ export function useWallet() {
 
   // Sign transaction helper
   const signTransaction = useCallback(
-    async (xdr: string, networkPassphrase?: string) => {
-      if (!publicKey || state !== "connected") {
-        return { signedTxXdr: "", error: "Wallet not connected" }
+    (xdr: string, networkPassphrase?: string) => {
+      if (!publicKey || state !== 'connected') {
+        return { signedTxXdr: '', error: 'Wallet not connected' }
       }
-      return signTransactionWithFreighter(xdr, network || "PUBLIC", networkPassphrase)
+      return signTransactionWithFreighter(xdr, network || 'PUBLIC', networkPassphrase)
     },
     [publicKey, network, state]
   )
@@ -60,22 +59,22 @@ export function useWallet() {
   const getBalance = useCallback(
     (asset: string) => {
       const found = balances.find((b) => b.asset === asset)
-      return found?.balance || "0"
+      return found?.balance || '0'
     },
     [balances]
   )
 
   // Check if on mainnet
-  const isMainnet = network === "PUBLIC"
-  const isTestnet = network === "TESTNET"
+  const isMainnet = network === 'PUBLIC'
+  const isTestnet = network === 'TESTNET'
 
   return {
     // State
     state,
-    isConnected: state === "connected",
-    isConnecting: state === "connecting",
-    isDisconnected: state === "disconnected",
-    hasError: state === "error",
+    isConnected: state === 'connected',
+    isConnecting: state === 'connecting',
+    isDisconnected: state === 'disconnected',
+    hasError: state === 'error',
     error,
 
     // Wallet info
@@ -102,4 +101,4 @@ export function useWallet() {
 }
 
 // Export types
-export type { FreighterNetwork, AssetBalance } from "@/lib/wallet/freighter"
+export type { FreighterNetwork, AssetBalance } from '@/lib/wallet/freighter'

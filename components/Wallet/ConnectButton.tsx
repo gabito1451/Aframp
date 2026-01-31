@@ -1,25 +1,25 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Wallet, Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useWallet } from "@/hooks/useWallet"
-import { WalletModal } from "./WalletModal"
-import { WalletDropdown } from "./WalletDropdown"
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Wallet, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { useWallet } from '@/hooks/useWallet'
+import { WalletModal } from './WalletModal'
+import { WalletDropdown } from './WalletDropdown'
 
 interface ConnectButtonProps {
-  variant?: "default" | "ghost" | "outline"
-  size?: "default" | "sm" | "lg"
+  variant?: 'default' | 'ghost' | 'outline'
+  size?: 'default' | 'sm' | 'lg'
   className?: string
 }
 
 export function ConnectButton({
-  variant = "default",
-  size = "sm",
-  className = "",
+  variant = 'default',
+  size = 'sm',
+  className = '',
 }: ConnectButtonProps) {
-  const { isConnected, isConnecting, formattedAddress, isFreighterInstalled } = useWallet()
+  const { isConnected, isConnecting, formattedAddress } = useWallet()
   const [modalOpen, setModalOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
 

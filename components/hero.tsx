@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { motion } from "framer-motion"
-import { ArrowRight, Wallet, CreditCard, TrendingUp, Coins } from "lucide-react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { motion } from 'framer-motion'
+import { ArrowRight, Wallet, CreditCard, TrendingUp, Coins } from 'lucide-react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export function Hero() {
   const textRevealVariants = {
-    hidden: { y: "100%" },
+    hidden: { y: '100%' },
     visible: {
       y: 0,
       transition: {
@@ -35,13 +35,15 @@ export function Hero() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8"
             >
               <span className="w-2 h-2 rounded-full bg-primary pulse-glow" />
-              <span className="text-sm text-primary font-medium">Powered by cNGN on Stellar (XLM)</span>
+              <span className="text-sm text-primary font-medium">
+                Powered by cNGN on Stellar (XLM)
+              </span>
             </motion.div>
 
             {/* Headline */}
             <h1
               className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6"
-              style={{ fontFamily: "var(--font-display), sans-serif" }}
+              style={{ fontFamily: 'var(--font-display), sans-serif' }}
             >
               <span className="block overflow-hidden">
                 <motion.span
@@ -72,8 +74,9 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed"
             >
-              Buy crypto from as low as <span className="text-foreground font-semibold">2,000 cNGN</span>. Pay bills,
-              send money, and grow your business with Africa&apos;s first stablecoin payment platform.
+              Buy crypto from as low as{' '}
+              <span className="text-foreground font-semibold">2,000 cNGN</span>. Pay bills, send
+              money, and grow your business with Africa&apos;s first stablecoin payment platform.
             </motion.p>
 
             {/* CTAs */}
@@ -138,7 +141,7 @@ export function Hero() {
             <div className="relative">
               <motion.div
                 animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+                transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
                 className="bg-card rounded-3xl p-6 shadow-2xl shadow-primary/10 border border-border"
               >
                 <div className="flex items-center justify-between mb-6">
@@ -160,9 +163,9 @@ export function Hero() {
                 {/* Quick actions */}
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { icon: Wallet, label: "Buy Crypto" },
-                    { icon: CreditCard, label: "Pay Bills" },
-                    { icon: ArrowRight, label: "Send" },
+                    { icon: Wallet, label: 'Buy Crypto' },
+                    { icon: CreditCard, label: 'Pay Bills' },
+                    { icon: ArrowRight, label: 'Send' },
                   ].map((action) => (
                     <motion.button
                       key={action.label}

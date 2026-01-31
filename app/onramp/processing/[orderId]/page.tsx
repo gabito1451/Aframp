@@ -1,4 +1,4 @@
-import { OnrampProcessingClient } from "@/components/onramp/onramp-processing-client"
+import { OnrampProcessingClient } from '@/components/onramp/onramp-processing-client'
 
 export default async function OnrampProcessingPage({
   params,

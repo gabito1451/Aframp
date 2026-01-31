@@ -177,6 +177,7 @@
 }
 
 /* Draw line animation for charts */
+
 @keyframes draw-line {
   to {
     stroke-dashoffset: 0;

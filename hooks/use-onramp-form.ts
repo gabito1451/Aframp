@@ -1,27 +1,27 @@
-"use client"
+'use client'
 
-import { useCallback, useEffect, useMemo, useState } from "react"
-import type { CryptoAsset, FiatCurrency, OnrampFormState, PaymentMethod } from "@/types/onramp"
-import { calculateCryptoAmount, calculateFeeBreakdown } from "@/lib/onramp/calculations"
-import { formatAmountInput, parseAmountInput } from "@/lib/onramp/formatters"
-import { getLimits, validateAmount } from "@/lib/onramp/validation"
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { CryptoAsset, FiatCurrency, OnrampFormState, PaymentMethod } from '@/types/onramp'
+import { calculateCryptoAmount, calculateFeeBreakdown } from '@/lib/onramp/calculations'
+import { formatAmountInput, parseAmountInput } from '@/lib/onramp/formatters'
+import { getLimits, validateAmount } from '@/lib/onramp/validation'
 
-const STORAGE_KEY = "onramp:form"
+const STORAGE_KEY = 'onramp:form'
 const EXPIRY_MS = 15 * 60 * 1000
 
 const defaultState: OnrampFormState = {
-  amountInput: "",
-  fiatCurrency: "NGN",
-  cryptoAsset: "cNGN",
-  paymentMethod: "bank_transfer",
+  amountInput: '',
+  fiatCurrency: 'NGN',
+  cryptoAsset: 'cNGN',
+  paymentMethod: 'bank_transfer',
 }
 
 const currencyAssetMap: Record<FiatCurrency, CryptoAsset> = {
-  NGN: "cNGN",
-  KES: "cKES",
-  GHS: "cGHS",
-  ZAR: "USDC",
-  UGX: "USDC",
+  NGN: 'cNGN',
+  KES: 'cKES',
+  GHS: 'cGHS',
+  ZAR: 'USDC',
+  UGX: 'USDC',
 }
 
 export function useOnrampForm(rate: number, _walletConnected: boolean) {
@@ -55,7 +55,7 @@ export function useOnrampForm(rate: number, _walletConnected: boolean) {
       setState(parsed.data)
       setHydrated(true)
     }, 0)
-    
+
     return () => clearTimeout(timer)
   }, [])
 
@@ -90,10 +90,7 @@ export function useOnrampForm(rate: number, _walletConnected: boolean) {
      Derived values (NO setState)
   -------------------------------- */
 
-  const amountValue = useMemo(
-    () => parseAmountInput(state.amountInput),
-    [state.amountInput]
-  )
+  const amountValue = useMemo(() => parseAmountInput(state.amountInput), [state.amountInput])
 
   const isCalculating = amountValue !== rawAmount
 
@@ -109,25 +106,14 @@ export function useOnrampForm(rate: number, _walletConnected: boolean) {
     }
   }, [error])
 
-  const cryptoAmount = useMemo(
-    () => calculateCryptoAmount(rawAmount, rate),
-    [rawAmount, rate]
-  )
+  const cryptoAmount = useMemo(() => calculateCryptoAmount(rawAmount, rate), [rawAmount, rate])
 
   const fees = useMemo(
-    () =>
-      calculateFeeBreakdown(
-        rawAmount,
-        state.fiatCurrency,
-        state.paymentMethod
-      ),
+    () => calculateFeeBreakdown(rawAmount, state.fiatCurrency, state.paymentMethod),
     [rawAmount, state.fiatCurrency, state.paymentMethod]
   )
 
-  const limits = useMemo(
-    () => getLimits(state.fiatCurrency),
-    [state.fiatCurrency]
-  )
+  const limits = useMemo(() => getLimits(state.fiatCurrency), [state.fiatCurrency])
 
   const isValid = !errors.amount && amountValue > 0 && rate > 0
 
@@ -136,14 +122,12 @@ export function useOnrampForm(rate: number, _walletConnected: boolean) {
   -------------------------------- */
 
   const setAmountInput = useCallback((value: string) => {
-    const sanitized = value.replace(/[^0-9.]/g, "")
-    const parts = sanitized.split(".")
+    const sanitized = value.replace(/[^0-9.]/g, '')
+    const parts = sanitized.split('.')
 
-    let normalized = [parts[0], parts[1]?.slice(0, 6)]
-      .filter(Boolean)
-      .join(".")
+    let normalized = [parts[0], parts[1]?.slice(0, 6)].filter(Boolean).join('.')
 
-    if (sanitized.startsWith(".") && parts[1]) {
+    if (sanitized.startsWith('.') && parts[1]) {
       normalized = `0.${parts[1].slice(0, 6)}`
     }
 
@@ -155,9 +139,7 @@ export function useOnrampForm(rate: number, _walletConnected: boolean) {
 
   const setFiatCurrency = useCallback((fiat: FiatCurrency) => {
     setState((prev) => {
-      const nextAsset = prev.cryptoAsset.startsWith("c")
-        ? currencyAssetMap[fiat]
-        : prev.cryptoAsset
+      const nextAsset = prev.cryptoAsset.startsWith('c') ? currencyAssetMap[fiat] : prev.cryptoAsset
 
       return {
         ...prev,

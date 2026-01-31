@@ -1,14 +1,14 @@
-"use client"
+'use client'
 
-import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
-import { Wallet, Coins } from "lucide-react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
+import { Wallet, Coins } from 'lucide-react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export function FinalCTA() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section className="py-24 px-4 bg-muted/30">
@@ -21,13 +21,13 @@ export function FinalCTA() {
       >
         <h2
           className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 tracking-tight text-balance"
-          style={{ fontFamily: "var(--font-display)" }}
+          style={{ fontFamily: 'var(--font-display)' }}
         >
           Ready to join Africa&apos;s financial revolution?
         </h2>
         <p className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto text-balance">
-          Over 50,000 Africans are already using Aframp to buy crypto, pay bills, and grow their businesses. Start your
-          journey today.
+          Over 50,000 Africans are already using Aframp to buy crypto, pay bills, and grow their
+          businesses. Start your journey today.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -51,7 +51,9 @@ export function FinalCTA() {
           </Link>
         </div>
 
-        <p className="mt-8 text-sm text-muted-foreground">Free forever for personal use. No credit card required.</p>
+        <p className="mt-8 text-sm text-muted-foreground">
+          Free forever for personal use. No credit card required.
+        </p>
       </motion.div>
     </section>
   )

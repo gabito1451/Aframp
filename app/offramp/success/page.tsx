@@ -34,7 +34,36 @@ export default function OfframpSuccessPage() {
     const handleDownloadPdf = async () => {
         setIsGeneratingPdf(true)
         try {
-            const success = await generateReceiptPDF("receipt-content", `Aframp-Receipt-${transaction.reference}.pdf`)
+            const success = generateReceiptPDF(
+                {
+                    title: "Aframp Offramp Receipt",
+                    reference: transaction.reference,
+                    subtitle: transaction.timestamp,
+                    sections: [
+                        {
+                            title: "Crypto Sold",
+                            rows: [
+                                { label: "Asset", value: transaction.cryptoAsset },
+                                { label: "Tx", value: transaction.cryptoTx },
+                                { label: "Confirmed", value: transaction.cryptoTimestamp },
+                            ],
+                        },
+                        {
+                            title: "Fiat Received",
+                            rows: [
+                                { label: "Amount", value: formatCurrency(transaction.amount, "NGN") },
+                                { label: "Bank", value: transaction.bank },
+                                { label: "Account", value: transaction.account },
+                                { label: "Exchange Rate", value: `1 cNGN = ${formatCurrency(transaction.exchangeRate, "NGN")}` },
+                                { label: "Fees", value: formatCurrency(transaction.fees, "NGN") },
+                            ],
+                        },
+                    ],
+                    totalLabel: "Total Received",
+                    totalValue: formatCurrency(transaction.amount, "NGN"),
+                },
+                `Aframp-Receipt-${transaction.reference}.pdf`
+            )
             if (success) {
                 toast.success("Receipt downloaded successfully")
             } else {

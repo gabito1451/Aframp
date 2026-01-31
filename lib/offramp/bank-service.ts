@@ -140,10 +140,10 @@ export function getSavedAccounts(): BankAccount[] {
   if (typeof window === 'undefined') return []
   try {
     const stored = localStorage.getItem(SAVED_ACCOUNTS_STORAGE_KEY)
-    const parsed = stored ? JSON.parse(stored) : []
-    return parsed.map((a: any) => ({
-      ...a,
-      lastUsed: a.lastUsed ? new Date(a.lastUsed) : undefined,
+    const parsed = stored ? (JSON.parse(stored) as BankAccount[]) : []
+    return parsed.map((account) => ({
+      ...account,
+      lastUsed: account.lastUsed ? new Date(account.lastUsed) : undefined,
     }))
   } catch {
     return []

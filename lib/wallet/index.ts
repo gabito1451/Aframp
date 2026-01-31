@@ -1,4 +1,4 @@
-export { useWalletStore, startBalanceRefresh, stopBalanceRefresh } from "./walletStore"
+export { useWalletStore, startBalanceRefresh, stopBalanceRefresh } from './walletStore'
 export {
   checkFreighterInstalled,
   checkFreighterAllowed,
@@ -14,4 +14,4 @@ export {
   type FreighterStatus,
   type AssetBalance,
   type SignTransactionResult,
-} from "./freighter"
+} from './freighter'

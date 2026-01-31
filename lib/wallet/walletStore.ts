@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { create } from "zustand"
-import { persist } from "zustand/middleware"
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import {
   getFreighterStatus,
   requestFreighterAccess,
@@ -10,9 +10,9 @@ import {
   getFreighterPublicKey,
   type FreighterNetwork,
   type AssetBalance,
-} from "./freighter"
+} from './freighter'
 
-export type WalletState = "disconnected" | "connecting" | "connected" | "error"
+export type WalletState = 'disconnected' | 'connecting' | 'connected' | 'error'
 
 export interface WalletStore {
   // Connection state
@@ -43,7 +43,7 @@ export const useWalletStore = create<WalletStore>()(
   persist(
     (set, get) => ({
       // Initial state
-      state: "disconnected",
+      state: 'disconnected',
       publicKey: null,
       network: null,
       isFreighterInstalled: false,
@@ -64,15 +64,15 @@ export const useWalletStore = create<WalletStore>()(
       },
 
       connect: async () => {
-        set({ state: "connecting", error: null })
+        set({ state: 'connecting', error: null })
 
         try {
           const status = await getFreighterStatus()
 
           if (!status.isInstalled) {
             set({
-              state: "error",
-              error: "Freighter wallet is not installed",
+              state: 'error',
+              error: 'Freighter wallet is not installed',
               isFreighterInstalled: false,
             })
             return false
@@ -85,8 +85,8 @@ export const useWalletStore = create<WalletStore>()(
 
           if (!publicKey) {
             set({
-              state: "error",
-              error: "Connection rejected or failed",
+              state: 'error',
+              error: 'Connection rejected or failed',
             })
             return false
           }
@@ -94,7 +94,7 @@ export const useWalletStore = create<WalletStore>()(
           const network = await getFreighterNetwork()
 
           set({
-            state: "connected",
+            state: 'connected',
             publicKey,
             network,
             error: null,
@@ -106,8 +106,8 @@ export const useWalletStore = create<WalletStore>()(
           return true
         } catch (error) {
           set({
-            state: "error",
-            error: error instanceof Error ? error.message : "Connection failed",
+            state: 'error',
+            error: error instanceof Error ? error.message : 'Connection failed',
           })
           return false
         }
@@ -115,7 +115,7 @@ export const useWalletStore = create<WalletStore>()(
 
       disconnect: () => {
         set({
-          state: "disconnected",
+          state: 'disconnected',
           publicKey: null,
           network: null,
           balances: [],
@@ -127,21 +127,21 @@ export const useWalletStore = create<WalletStore>()(
       refreshBalances: async () => {
         const { publicKey, network, state } = get()
 
-        if (state !== "connected" || !publicKey) {
+        if (state !== 'connected' || !publicKey) {
           return
         }
 
         set({ balancesLoading: true })
 
         try {
-          const balances = await fetchStellarBalances(publicKey, network || "PUBLIC")
+          const balances = await fetchStellarBalances(publicKey, network || 'PUBLIC')
           set({
             balances,
             balancesLoading: false,
             lastBalanceUpdate: Date.now(),
           })
         } catch (error) {
-          console.error("Failed to refresh balances:", error)
+          console.error('Failed to refresh balances:', error)
           set({ balancesLoading: false })
         }
       },
@@ -150,7 +150,7 @@ export const useWalletStore = create<WalletStore>()(
         const { publicKey: storedKey, state } = get()
 
         // Only auto-reconnect if we have a stored key and are disconnected
-        if (!storedKey || state === "connected" || state === "connecting") {
+        if (!storedKey || state === 'connected' || state === 'connecting') {
           return
         }
 
@@ -167,7 +167,7 @@ export const useWalletStore = create<WalletStore>()(
           // Check if Freighter is still connected with same key
           if (status.isConnected && status.publicKey === storedKey) {
             set({
-              state: "connected",
+              state: 'connected',
               publicKey: status.publicKey,
               network: status.network,
             })
@@ -178,7 +178,7 @@ export const useWalletStore = create<WalletStore>()(
             if (currentKey === storedKey) {
               const network = await getFreighterNetwork()
               set({
-                state: "connected",
+                state: 'connected',
                 publicKey: currentKey,
                 network,
               })
@@ -196,12 +196,12 @@ export const useWalletStore = create<WalletStore>()(
         }
       },
 
-      setError: (error) => set({ error, state: error ? "error" : get().state }),
+      setError: (error) => set({ error, state: error ? 'error' : get().state }),
 
       clearError: () => set({ error: null }),
     }),
     {
-      name: "aframp-wallet",
+      name: 'aframp-wallet',
       partialize: (state: WalletStore) => ({
         publicKey: state.publicKey,
         network: state.network,
@@ -218,7 +218,7 @@ export function startBalanceRefresh() {
 
   balanceInterval = setInterval(() => {
     const { state, refreshBalances } = useWalletStore.getState()
-    if (state === "connected") {
+    if (state === 'connected') {
       void refreshBalances()
     }
   }, BALANCE_REFRESH_INTERVAL)

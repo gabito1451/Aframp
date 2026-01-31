@@ -163,9 +163,9 @@ export function OnrampPageClient() {
             <Link href="/offramp" className="rounded-full px-3 py-2 hover:text-foreground">
               Offramp
             </Link>
-            <button type="button" className="rounded-full px-3 py-2 hover:text-foreground">
+            <Link href="/bills" className="rounded-full px-3 py-2 hover:text-foreground">
               Pay Bills
-            </button>
+            </Link>
           </nav>
 
           <div className="flex items-center gap-3">

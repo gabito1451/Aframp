@@ -1,15 +1,15 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useMemo, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 import {
   Wallet,
   ExternalLink,
@@ -19,15 +19,15 @@ import {
   RefreshCw,
   Smartphone,
   Monitor,
-} from "lucide-react"
-import { useWallet } from "@/hooks/useWallet"
+} from 'lucide-react'
+import { useWallet } from '@/hooks/useWallet'
 
 interface WalletModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-type ModalView = "connect" | "installing" | "connecting" | "network-warning"
+type ModalView = 'connect' | 'installing' | 'connecting' | 'network-warning'
 
 export function WalletModal({ open, onOpenChange }: WalletModalProps) {
   const {
@@ -41,60 +41,51 @@ export function WalletModal({ open, onOpenChange }: WalletModalProps) {
     clearError,
   } = useWallet()
 
-  const [view, setView] = useState<ModalView>("connect")
+  const [manualView, setManualView] = useState<ModalView | null>(null)
 
-  // Reset view when modal opens
-  useEffect(() => {
-    if (open) {
+  const derivedView = useMemo<ModalView>(() => {
+    if (isConnecting) return 'connecting'
+    if (open && isConnected && network && network !== 'PUBLIC') return 'network-warning'
+    if (open && !isFreighterInstalled) return 'installing'
+    return 'connect'
+  }, [isConnecting, isConnected, network, open, isFreighterInstalled])
+
+  const view = manualView ?? derivedView
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (nextOpen) {
       clearError()
-      if (!isFreighterInstalled) {
-        setView("installing")
-      } else {
-        setView("connect")
-      }
+      setManualView(null)
+    } else {
+      setManualView(null)
     }
-  }, [open, isFreighterInstalled, clearError])
-
-  // Handle successful connection
-  useEffect(() => {
-    if (isConnected && open) {
-      // Check network
-      if (network && network !== "PUBLIC") {
-        setView("network-warning")
-      } else {
-        onOpenChange(false)
-      }
-    }
-  }, [isConnected, network, open, onOpenChange])
-
-  // Update view based on connecting state
-  useEffect(() => {
-    if (isConnecting) {
-      setView("connecting")
-    }
-  }, [isConnecting])
+    onOpenChange(nextOpen)
+  }
 
   const handleConnect = async () => {
-    setView("connecting")
+    setManualView('connecting')
     const success = await connect()
     if (!success && !isConnecting) {
-      setView("connect")
+      setManualView('connect')
+    }
+    if (success && (!network || network === 'PUBLIC')) {
+      handleOpenChange(false)
     }
   }
 
   const handleRetry = () => {
     clearError()
-    setView("connect")
+    setManualView('connect')
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-md p-0 overflow-hidden">
         <AnimatePresence mode="wait">
-          {view === "installing" && (
-            <InstallView key="install" onCheckAgain={() => setView("connect")} />
+          {view === 'installing' && (
+            <InstallView key="install" onCheckAgain={() => setManualView('connect')} />
           )}
-          {view === "connect" && (
+          {view === 'connect' && (
             <ConnectView
               key="connect"
               onConnect={handleConnect}
@@ -102,11 +93,11 @@ export function WalletModal({ open, onOpenChange }: WalletModalProps) {
               error={error}
               onRetry={handleRetry}
               isFreighterInstalled={isFreighterInstalled}
-              onShowInstall={() => setView("installing")}
+              onShowInstall={() => setManualView('installing')}
             />
           )}
-          {view === "connecting" && <ConnectingView key="connecting" />}
-          {view === "network-warning" && (
+          {view === 'connecting' && <ConnectingView key="connecting" />}
+          {view === 'network-warning' && (
             <NetworkWarningView
               key="network"
               network={network}
@@ -133,23 +124,21 @@ function InstallView({ onCheckAgain }: { onCheckAgain: () => void }) {
           <Wallet className="w-6 h-6" />
           Install Freighter
         </DialogTitle>
-        <DialogDescription>
-          Freighter is required to connect to AFRAMP
-        </DialogDescription>
+        <DialogDescription>Freighter is required to connect to AFRAMP</DialogDescription>
       </DialogHeader>
 
       <div className="space-y-4">
         <div className="bg-muted/50 rounded-lg p-4 border border-border">
           <h4 className="font-semibold mb-3">What is Freighter?</h4>
           <p className="text-sm text-muted-foreground">
-            Freighter is the most popular Stellar wallet. It lets you securely
-            manage your XLM, USDC, cNGN, and other Stellar assets.
+            Freighter is the most popular Stellar wallet. It lets you securely manage your XLM,
+            USDC, cNGN, and other Stellar assets.
           </p>
         </div>
 
         <div className="space-y-3">
           <h4 className="font-semibold">Install Options</h4>
-          
+
           <a
             href="https://chrome.google.com/webstore/detail/freighter/bcacfldlkkdogcmkkibnjlakofdplcbk"
             target="_blank"
@@ -159,9 +148,7 @@ function InstallView({ onCheckAgain }: { onCheckAgain: () => void }) {
             <Monitor className="w-8 h-8 text-primary" />
             <div className="flex-1">
               <h5 className="font-medium">Chrome Extension</h5>
-              <p className="text-sm text-muted-foreground">
-                For Chrome, Brave, Edge browsers
-              </p>
+              <p className="text-sm text-muted-foreground">For Chrome, Brave, Edge browsers</p>
             </div>
             <ExternalLink className="w-4 h-4 text-muted-foreground" />
           </a>
@@ -175,9 +162,7 @@ function InstallView({ onCheckAgain }: { onCheckAgain: () => void }) {
             <Smartphone className="w-8 h-8 text-primary" />
             <div className="flex-1">
               <h5 className="font-medium">Mobile App</h5>
-              <p className="text-sm text-muted-foreground">
-                iOS & Android available
-              </p>
+              <p className="text-sm text-muted-foreground">iOS & Android available</p>
             </div>
             <ExternalLink className="w-4 h-4 text-muted-foreground" />
           </a>
@@ -203,11 +188,7 @@ function InstallView({ onCheckAgain }: { onCheckAgain: () => void }) {
           </Button>
         </div>
 
-        <Button
-          variant="ghost"
-          className="w-full"
-          onClick={onCheckAgain}
-        >
+        <Button variant="ghost" className="w-full" onClick={onCheckAgain}>
           I&apos;ve installed it, let me connect
         </Button>
       </div>
@@ -242,16 +223,14 @@ function ConnectView({
           <Wallet className="w-6 h-6" />
           Connect Freighter
         </DialogTitle>
-        <DialogDescription>
-          Connect your Stellar wallet to use AFRAMP
-        </DialogDescription>
+        <DialogDescription>Connect your Stellar wallet to use AFRAMP</DialogDescription>
       </DialogHeader>
 
       <div className="space-y-4">
         {hasError && error && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
+            animate={{ opacity: 1, height: 'auto' }}
             className="bg-red-50 dark:bg-red-950/30 rounded-lg p-4 border border-red-200 dark:border-red-800"
           >
             <div className="flex items-start gap-3">
@@ -260,17 +239,10 @@ function ConnectView({
                 <p className="text-sm font-medium text-red-800 dark:text-red-200">
                   Connection Failed
                 </p>
-                <p className="text-sm text-red-700 dark:text-red-300 mt-1">
-                  {error}
-                </p>
+                <p className="text-sm text-red-700 dark:text-red-300 mt-1">{error}</p>
               </div>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onRetry}
-              className="w-full mt-3"
-            >
+            <Button variant="outline" size="sm" onClick={onRetry} className="w-full mt-3">
               <RefreshCw className="w-4 h-4 mr-2" />
               Try Again
             </Button>
@@ -280,18 +252,12 @@ function ConnectView({
         {/* Freighter logo and connect button */}
         <div className="text-center py-4">
           <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
-            <svg
-              viewBox="0 0 40 40"
-              className="w-12 h-12 text-white"
-              fill="currentColor"
-            >
+            <svg viewBox="0 0 40 40" className="w-12 h-12 text-white" fill="currentColor">
               <path d="M20 5L5 15v10l15 10 15-10V15L20 5zm0 3.5L31 16l-11 7.5L9 16l11-7.5zM8 18.5l10 6.5v8L8 26.5v-8zm24 0v8l-10 6.5v-8l10-6.5z" />
             </svg>
           </div>
           <h3 className="text-lg font-semibold mb-2">Freighter Wallet</h3>
-          <p className="text-sm text-muted-foreground">
-            The most trusted Stellar wallet
-          </p>
+          <p className="text-sm text-muted-foreground">The most trusted Stellar wallet</p>
         </div>
 
         <div className="bg-muted/50 rounded-lg p-4 border border-border space-y-2">
@@ -316,18 +282,12 @@ function ConnectView({
         </div>
 
         {isFreighterInstalled ? (
-          <Button
-            className="w-full h-12 text-base"
-            onClick={onConnect}
-          >
+          <Button className="w-full h-12 text-base" onClick={onConnect}>
             <Wallet className="w-5 h-5 mr-2" />
             Connect Freighter
           </Button>
         ) : (
-          <Button
-            className="w-full h-12 text-base"
-            onClick={onShowInstall}
-          >
+          <Button className="w-full h-12 text-base" onClick={onShowInstall}>
             <ExternalLink className="w-5 h-5 mr-2" />
             Install Freighter
           </Button>
@@ -350,9 +310,7 @@ function ConnectingView() {
           <Wallet className="w-6 h-6" />
           Connecting...
         </DialogTitle>
-        <DialogDescription>
-          Waiting for Freighter approval
-        </DialogDescription>
+        <DialogDescription>Waiting for Freighter approval</DialogDescription>
       </DialogHeader>
 
       <div className="text-center py-8">
@@ -361,8 +319,8 @@ function ConnectingView() {
         </div>
         <h3 className="text-lg font-semibold mb-2">Check Freighter</h3>
         <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-          A popup should appear from Freighter. Click &quot;Connect&quot; to allow AFRAMP
-          to access your wallet.
+          A popup should appear from Freighter. Click &quot;Connect&quot; to allow AFRAMP to access
+          your wallet.
         </p>
       </div>
 
@@ -397,7 +355,7 @@ function NetworkWarningView({
           Wrong Network
         </DialogTitle>
         <DialogDescription>
-          You&apos;re connected to {network || "unknown network"}
+          You&apos;re connected to {network || 'unknown network'}
         </DialogDescription>
       </DialogHeader>
 
@@ -407,8 +365,8 @@ function NetworkWarningView({
             AFRAMP uses Stellar Mainnet
           </h4>
           <p className="text-sm text-yellow-700 dark:text-yellow-300">
-            For real transactions, please switch to the Public (Mainnet) network
-            in Freighter settings.
+            For real transactions, please switch to the Public (Mainnet) network in Freighter
+            settings.
           </p>
         </div>
 
