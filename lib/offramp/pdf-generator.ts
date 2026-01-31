@@ -1,29 +1,63 @@
 import jsPDF from "jspdf"
-import html2canvas from "html2canvas"
 
-export async function generateReceiptPDF(elementId: string, filename: string) {
-    const element = document.getElementById(elementId)
-    if (!element) return
+export interface ReceiptRow {
+  label: string
+  value: string
+}
 
-    try {
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            useCORS: true,
-            logging: false,
-            backgroundColor: "#ffffff",
-        })
+export interface ReceiptSection {
+  title: string
+  rows: ReceiptRow[]
+}
 
-        const imgData = canvas.toDataURL("image/png")
-        const pdf = new jsPDF("p", "mm", "a4")
-        const imgProps = pdf.getImageProperties(imgData)
-        const pdfWidth = pdf.internal.pageSize.getWidth()
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+export interface ReceiptPdfData {
+  title: string
+  reference: string
+  subtitle?: string
+  sections: ReceiptSection[]
+  totalLabel?: string
+  totalValue?: string
+}
 
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight)
-        pdf.save(filename)
-        return true
-    } catch (error) {
-        console.error("PDF generation failed:", error)
-        return false
-    }
+export function generateReceiptPDF(data: ReceiptPdfData, filename: string) {
+  const doc = new jsPDF()
+  let y = 24
+
+  doc.setFontSize(20)
+  doc.text(data.title, 16, y)
+  doc.setFontSize(11)
+  doc.text(`Reference: ${data.reference}`, 150, y, { align: "right" })
+  y += 8
+
+  if (data.subtitle) {
+    doc.setFontSize(11)
+    doc.text(data.subtitle, 16, y)
+    y += 8
+  }
+
+  data.sections.forEach((section) => {
+    doc.setFontSize(12)
+    doc.text(section.title, 16, y)
+    y += 6
+
+    doc.setFontSize(10)
+    section.rows.forEach((row) => {
+      const valueLines = doc.splitTextToSize(row.value, 110)
+      doc.text(row.label, 16, y)
+      doc.text(valueLines, 80, y)
+      y += 5 * valueLines.length
+    })
+
+    y += 6
+  })
+
+  if (data.totalLabel && data.totalValue) {
+    doc.setFontSize(12)
+    doc.text(data.totalLabel, 16, y)
+    doc.text(data.totalValue, 80, y)
+    y += 8
+  }
+
+  doc.save(filename)
+  return true
 }

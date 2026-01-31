@@ -99,6 +99,7 @@ export function OnrampCalculator({
         className="space-y-6"
         onSubmit={(event) => {
           event.preventDefault()
+          event.stopPropagation()
           onSubmit()
         }}
       >
@@ -209,6 +210,7 @@ export function OnrampCalculator({
             className="w-full rounded-full text-base"
             disabled={!isValid || exchangeLoading}
             type="submit"
+            onClick={onSubmit}
           >
             {exchangeLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
             Continue to Payment →

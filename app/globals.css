@@ -177,6 +177,7 @@
 }
 
 /* Draw line animation for charts */
+
 @keyframes draw-line {
   to {
     stroke-dashoffset: 0;
@@ -218,4 +219,91 @@
 
 .count-up {
   animation: count-up 0.6s ease-out forwards;
+}
+/* Processing page specific animations */
+@keyframes status-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.status-pulse {
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+@keyframes progress-fill {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: var(--progress-value, 0%);
+  }
+}
+
+.progress-fill {
+  animation: progress-fill 1s ease-out forwards;
+}
+
+@keyframes slide-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-up {
+  animation: slide-in-up 0.5s ease-out forwards;
+}
+
+@keyframes check-mark {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+  100% {
+    stroke-dasharray: 100 0;
+  }
+}
+
+.check-mark {
+  animation: check-mark 0.6s ease-out forwards;
+}
+
+/* Loading spinner for transaction steps */
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* Success celebration animation */
+@keyframes celebrate {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(-5deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(5deg);
+  }
+}
+
+.celebrate {
+  animation: celebrate 0.6s ease-in-out;
 }

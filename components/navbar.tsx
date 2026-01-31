@@ -1,23 +1,22 @@
-"use client"
+'use client'
 
-import { useState, useRef } from "react"
-import { motion } from "framer-motion"
-import { Menu, X, Wallet } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { WalletConnectModal } from "@/components/wallet-connect-modal"
+import { useState, useRef } from 'react'
+import { motion } from 'framer-motion'
+import { Menu, X, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/theme-toggle'
+import { ConnectButton } from '@/components/Wallet'
 
 const navItems = [
-  { label: "Features", href: "#features" },
-  { label: "How it Works", href: "#how-it-works" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Business", href: "#business" },
+  { label: 'Features', href: '#features' },
+  { label: 'How it Works', href: '#how-it-works' },
+  { label: 'Pricing', href: '#pricing' },
 ]
 
 export function Navbar() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [walletModalOpen, setWalletModalOpen] = useState(false)
   const navRef = useRef<HTMLDivElement>(null)
 
   return (
@@ -31,12 +30,12 @@ export function Navbar() {
         ref={navRef}
         className="relative flex items-center justify-between px-4 py-3 rounded-full bg-card/80 backdrop-blur-md border border-border shadow-sm"
       >
-        <a href="#" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
             <span className="text-primary-foreground font-bold text-base">A</span>
           </div>
           <span className="font-semibold text-foreground hidden sm:block text-lg">Aframp</span>
-        </a>
+        </Link>
 
         {/* Desktop Nav Items */}
         <div className="hidden md:flex items-center gap-1 relative">
@@ -53,28 +52,37 @@ export function Navbar() {
                   layoutId="navbar-hover"
                   className="absolute inset-0 bg-muted rounded-full"
                   initial={false}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 />
               )}
               <span className="relative z-10">{item.label}</span>
             </a>
           ))}
+          <Link
+            href="/onramp"
+            className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Onramp
+          </Link>
+          <Link
+            href="/offramp"
+            className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Offramp
+          </Link>
         </div>
 
         {/* CTA Buttons */}
         <div className="hidden md:flex items-center gap-2">
           <ThemeToggle />
-          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground hover:bg-muted">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground hover:bg-muted"
+          >
             Explore
           </Button>
-          <Button
-            size="sm"
-            onClick={() => setWalletModalOpen(true)}
-            className="shimmer-btn bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-5"
-          >
-            <Wallet className="mr-1.5 w-4 h-4" />
-            Connect
-          </Button>
+          <ConnectButton />
         </div>
 
         {/* Mobile Menu Button */}
@@ -109,24 +117,35 @@ export function Navbar() {
                 {item.label}
               </a>
             ))}
+            <Link
+              href="/onramp"
+              className="px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors flex items-center justify-between"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Buy Crypto (Onramp)
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/offramp"
+              className="px-4 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors flex items-center justify-between"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Sell Crypto (Offramp)
+              <ArrowRight className="w-4 h-4" />
+            </Link>
             <hr className="border-border my-2" />
-            <Button variant="ghost" className="justify-start text-muted-foreground hover:text-foreground">
+            <Button
+              variant="ghost"
+              className="justify-start text-muted-foreground hover:text-foreground"
+            >
               Explore
             </Button>
-            <Button
-              onClick={() => {
-                setWalletModalOpen(true)
-                setMobileMenuOpen(false)
-              }}
-              className="shimmer-btn bg-primary text-primary-foreground hover:bg-primary/90 rounded-full"
-            >
-              <Wallet className="mr-2 w-4 h-4" />
-              Connect Wallet
-            </Button>
+            <div onClick={() => setMobileMenuOpen(false)}>
+              <ConnectButton className="w-full" />
+            </div>
           </div>
         </motion.div>
       )}
-      <WalletConnectModal open={walletModalOpen} onOpenChange={setWalletModalOpen} />
     </motion.header>
   )
 }
