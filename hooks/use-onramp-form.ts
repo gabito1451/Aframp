@@ -1,94 +1,151 @@
-"use client"
+'use client'
 
-import { useCallback, useEffect, useMemo, useState } from "react"
-import type { CryptoAsset, FiatCurrency, OnrampFormState, PaymentMethod } from "@/types/onramp"
-import { calculateCryptoAmount, calculateFeeBreakdown } from "@/lib/onramp/calculations"
-import { formatAmountInput, parseAmountInput } from "@/lib/onramp/formatters"
-import { getLimits, validateAmount } from "@/lib/onramp/validation"
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { CryptoAsset, FiatCurrency, OnrampFormState, PaymentMethod } from '@/types/onramp'
+import { calculateCryptoAmount, calculateFeeBreakdown } from '@/lib/onramp/calculations'
+import { formatAmountInput, parseAmountInput } from '@/lib/onramp/formatters'
+import { getLimits, validateAmount } from '@/lib/onramp/validation'
 
-const STORAGE_KEY = "onramp:form"
+const STORAGE_KEY = 'onramp:form'
 const EXPIRY_MS = 15 * 60 * 1000
 
 const defaultState: OnrampFormState = {
-  amountInput: "",
-  fiatCurrency: "NGN",
-  cryptoAsset: "cNGN",
-  paymentMethod: "bank_transfer",
+  amountInput: '',
+  fiatCurrency: 'NGN',
+  cryptoAsset: 'cNGN',
+  paymentMethod: 'bank_transfer',
 }
 
 const currencyAssetMap: Record<FiatCurrency, CryptoAsset> = {
-  NGN: "cNGN",
-  KES: "cKES",
-  GHS: "cGHS",
-  ZAR: "USDC",
-  UGX: "USDC",
+  NGN: 'cNGN',
+  KES: 'cKES',
+  GHS: 'cGHS',
+  ZAR: 'USDC',
+  UGX: 'USDC',
 }
 
-export function useOnrampForm(rate: number, walletConnected: boolean) {
+export function useOnrampForm(rate: number, _walletConnected: boolean) {
   const [state, setState] = useState<OnrampFormState>(defaultState)
-  const [errors, setErrors] = useState<{ amount?: string }>({})
-  const [isCalculating, setIsCalculating] = useState(false)
-  const [debouncedAmount, setDebouncedAmount] = useState(0)
   const [hydrated, setHydrated] = useState(false)
+  const [rawAmount, setRawAmount] = useState(0)
 
+  /* -------------------------------
+     Restore from localStorage
+  -------------------------------- */
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY)
+
     if (!stored) {
-      setHydrated(true)
-      return
+      const timer = setTimeout(() => setHydrated(true), 0)
+      return () => clearTimeout(timer)
     }
 
-    const parsed = JSON.parse(stored) as { data: OnrampFormState; timestamp: number }
+    const parsed = JSON.parse(stored) as {
+      data: OnrampFormState
+      timestamp: number
+    }
+
     if (Date.now() - parsed.timestamp > EXPIRY_MS) {
       localStorage.removeItem(STORAGE_KEY)
-      setHydrated(true)
-      return
+      const timer = setTimeout(() => setHydrated(true), 0)
+      return () => clearTimeout(timer)
     }
 
-    setState(parsed.data)
-    setHydrated(true)
+    const timer = setTimeout(() => {
+      setState(parsed.data)
+      setHydrated(true)
+    }, 0)
+
+    return () => clearTimeout(timer)
   }, [])
 
+  /* -------------------------------
+     Persist to localStorage
+  -------------------------------- */
   useEffect(() => {
     if (!hydrated) return
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ data: state, timestamp: Date.now() }))
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        data: state,
+        timestamp: Date.now(),
+      })
+    )
   }, [state, hydrated])
 
+  /* -------------------------------
+     Debounce amount input
+  -------------------------------- */
   useEffect(() => {
-    setIsCalculating(true)
     const timer = setTimeout(() => {
       const amount = parseAmountInput(state.amountInput)
-      setDebouncedAmount(amount)
-      setIsCalculating(false)
+      setRawAmount(amount)
     }, 300)
 
     return () => clearTimeout(timer)
-  }, [state.amountInput, rate])
+  }, [state.amountInput])
 
-  useEffect(() => {
-    if (!state.amountInput) {
-      setErrors({})
-      return
+  /* -------------------------------
+     Derived values (NO setState)
+  -------------------------------- */
+
+  const amountValue = useMemo(() => parseAmountInput(state.amountInput), [state.amountInput])
+
+  const isCalculating = amountValue !== rawAmount
+
+  const error = useMemo(() => {
+    if (!state.amountInput) return undefined
+
+    return validateAmount(amountValue, state.fiatCurrency)
+  }, [amountValue, state.amountInput, state.fiatCurrency])
+
+  const errors = useMemo(() => {
+    return {
+      amount: error,
     }
-    const amount = parseAmountInput(state.amountInput)
-    const error = validateAmount(amount, state.fiatCurrency)
-    setErrors((prev) => ({ ...prev, amount: error }))
-  }, [state.amountInput, state.fiatCurrency])
+  }, [error])
+
+  const cryptoAmount = useMemo(() => calculateCryptoAmount(rawAmount, rate), [rawAmount, rate])
+
+  const fees = useMemo(
+    () => calculateFeeBreakdown(rawAmount, state.fiatCurrency, state.paymentMethod),
+    [rawAmount, state.fiatCurrency, state.paymentMethod]
+  )
+
+  const limits = useMemo(() => getLimits(state.fiatCurrency), [state.fiatCurrency])
+
+  const isValid = !errors.amount && amountValue > 0 && rate > 0
+
+  /* -------------------------------
+     Actions
+  -------------------------------- */
 
   const setAmountInput = useCallback((value: string) => {
-    const sanitized = value.replace(/[^0-9.]/g, "")
-    const parts = sanitized.split(".")
-    let normalized = [parts[0], parts[1]?.slice(0, 6)].filter(Boolean).join(".")
-    if (sanitized.startsWith(".") && parts[1]) {
+    const sanitized = value.replace(/[^0-9.]/g, '')
+    const parts = sanitized.split('.')
+
+    let normalized = [parts[0], parts[1]?.slice(0, 6)].filter(Boolean).join('.')
+
+    if (sanitized.startsWith('.') && parts[1]) {
       normalized = `0.${parts[1].slice(0, 6)}`
     }
-    setState((prev) => ({ ...prev, amountInput: formatAmountInput(normalized) }))
+
+    setState((prev) => ({
+      ...prev,
+      amountInput: formatAmountInput(normalized),
+    }))
   }, [])
 
   const setFiatCurrency = useCallback((fiat: FiatCurrency) => {
     setState((prev) => {
-      const nextAsset = prev.cryptoAsset.startsWith("c") ? currencyAssetMap[fiat] : prev.cryptoAsset
-      return { ...prev, fiatCurrency: fiat, cryptoAsset: nextAsset }
+      const nextAsset = prev.cryptoAsset.startsWith('c') ? currencyAssetMap[fiat] : prev.cryptoAsset
+
+      return {
+        ...prev,
+        fiatCurrency: fiat,
+        cryptoAsset: nextAsset,
+      }
     })
   }, [])
 
@@ -99,15 +156,6 @@ export function useOnrampForm(rate: number, walletConnected: boolean) {
   const setPaymentMethod = useCallback((method: PaymentMethod) => {
     setState((prev) => ({ ...prev, paymentMethod: method }))
   }, [])
-
-  const amountValue = useMemo(() => parseAmountInput(state.amountInput), [state.amountInput])
-  const cryptoAmount = useMemo(() => calculateCryptoAmount(debouncedAmount, rate), [debouncedAmount, rate])
-  const fees = useMemo(
-    () => calculateFeeBreakdown(debouncedAmount, state.fiatCurrency, state.paymentMethod),
-    [debouncedAmount, state.fiatCurrency, state.paymentMethod]
-  )
-  const limits = useMemo(() => getLimits(state.fiatCurrency), [state.fiatCurrency])
-  const isValid = walletConnected && !errors.amount && amountValue > 0 && rate > 0
 
   return {
     state,

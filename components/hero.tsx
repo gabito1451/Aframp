@@ -1,25 +1,21 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { ArrowRight, Wallet, CreditCard, TrendingUp, Zap, Coins } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { WalletConnectModal } from "@/components/wallet-connect-modal"
-
-const textRevealVariants = {
-  hidden: { y: "100%" },
-  visible: (i: number) => ({
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.22, 1, 0.36, 1],
-      delay: i * 0.1,
-    },
-  }),
-}
+import { motion } from 'framer-motion'
+import { ArrowRight, Wallet, CreditCard, TrendingUp, Coins } from 'lucide-react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export function Hero() {
-  const [walletModalOpen, setWalletModalOpen] = useState(false)
+  const textRevealVariants = {
+    hidden: { y: '100%' },
+    visible: {
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as const,
+      },
+    },
+  }
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-24 pb-16 overflow-hidden">
@@ -39,13 +35,15 @@ export function Hero() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8"
             >
               <span className="w-2 h-2 rounded-full bg-primary pulse-glow" />
-              <span className="text-sm text-primary font-medium">Powered by cNGN on Stellar (XLM)</span>
+              <span className="text-sm text-primary font-medium">
+                Powered by cNGN on Stellar (XLM)
+              </span>
             </motion.div>
 
             {/* Headline */}
             <h1
               className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6"
-              style={{ fontFamily: "var(--font-display), sans-serif" }}
+              style={{ fontFamily: 'var(--font-display), sans-serif' }}
             >
               <span className="block overflow-hidden">
                 <motion.span
@@ -53,7 +51,6 @@ export function Hero() {
                   variants={textRevealVariants}
                   initial="hidden"
                   animate="visible"
-                  custom={0}
                 >
                   Pay, Send & Buy
                 </motion.span>
@@ -64,7 +61,6 @@ export function Hero() {
                   variants={textRevealVariants}
                   initial="hidden"
                   animate="visible"
-                  custom={1}
                 >
                   Crypto in Africa
                 </motion.span>
@@ -78,8 +74,9 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed"
             >
-              Buy crypto from as low as <span className="text-foreground font-semibold">2,000 cNGN</span>. Pay bills,
-              send money, and grow your business with Africa's first stablecoin payment platform.
+              Buy crypto from as low as{' '}
+              <span className="text-foreground font-semibold">2,000 cNGN</span>. Pay bills, send
+              money, and grow your business with Africa&apos;s first stablecoin payment platform.
             </motion.p>
 
             {/* CTAs */}
@@ -89,23 +86,24 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.6 }}
               className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 mb-10"
             >
-              <Button
-                size="lg"
-                onClick={() => setWalletModalOpen(true)}
-                className="shimmer-btn bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 h-14 text-base font-medium shadow-lg shadow-primary/20"
-              >
-                <Wallet className="mr-2 w-5 h-5" />
-                Connect Wallet
-              </Button>
-              <WalletConnectModal open={walletModalOpen} onOpenChange={setWalletModalOpen} />
-              <Button
-                variant="outline"
-                size="lg"
-                className="rounded-full px-8 h-14 text-base font-medium border-border text-foreground hover:bg-muted bg-transparent"
-              >
-                <Zap className="mr-2 w-5 h-5" />
-                Swap Tokens
-              </Button>
+              <Link href="/onramp">
+                <Button
+                  size="lg"
+                  className="rounded-full px-8 h-14 text-base font-medium border-border text-foreground hover:bg-primary/20 bg-transparent"
+                >
+                  <Wallet className="mr-2 w-5 h-5" />
+                  Buy Crypto
+                </Button>
+              </Link>
+              <Link href="/offramp">
+                <Button
+                  size="lg"
+                  className="rounded-full px-8 h-14 text-base font-medium border-border text-foreground hover:bg-primary/20 bg-transparent"
+                >
+                  <Coins className="mr-2 w-5 h-5" />
+                  Sell Crypto
+                </Button>
+              </Link>
             </motion.div>
 
             {/* Stats */}
@@ -143,7 +141,7 @@ export function Hero() {
             <div className="relative">
               <motion.div
                 animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+                transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
                 className="bg-card rounded-3xl p-6 shadow-2xl shadow-primary/10 border border-border"
               >
                 <div className="flex items-center justify-between mb-6">
@@ -165,10 +163,10 @@ export function Hero() {
                 {/* Quick actions */}
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { icon: Wallet, label: "Buy Crypto" },
-                    { icon: CreditCard, label: "Pay Bills" },
-                    { icon: ArrowRight, label: "Send" },
-                  ].map((action, i) => (
+                    { icon: Wallet, label: 'Buy Crypto' },
+                    { icon: CreditCard, label: 'Pay Bills' },
+                    { icon: ArrowRight, label: 'Send' },
+                  ].map((action) => (
                     <motion.button
                       key={action.label}
                       whileHover={{ scale: 1.02 }}
