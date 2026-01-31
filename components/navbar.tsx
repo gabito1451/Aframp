@@ -2,11 +2,11 @@
 
 import { useState, useRef } from "react"
 import { motion } from "framer-motion"
-import { Menu, X, Wallet, ArrowRight } from "lucide-react"
+import { Menu, X, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { WalletConnectModal } from "@/components/wallet-connect-modal"
+import { ConnectButton } from "@/components/Wallet"
 
 const navItems = [
   { label: "Features", href: "#features" },
@@ -17,7 +17,6 @@ const navItems = [
 export function Navbar() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [walletModalOpen, setWalletModalOpen] = useState(false)
   const navRef = useRef<HTMLDivElement>(null)
 
   return (
@@ -76,14 +75,10 @@ export function Navbar() {
         {/* CTA Buttons */}
         <div className="hidden md:flex items-center gap-2">
           <ThemeToggle />
-          <Button
-            size="sm"
-            onClick={() => setWalletModalOpen(true)}
-            className="shimmer-btn bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-5"
-          >
-            <Wallet className="mr-1.5 w-4 h-4" />
-            Connect
+          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground hover:bg-muted">
+            Explore
           </Button>
+          <ConnectButton />
         </div>
 
         {/* Mobile Menu Button */}
@@ -135,20 +130,15 @@ export function Navbar() {
                 <ArrowRight className="w-4 h-4" />
             </Link>
             <hr className="border-border my-2" />
-            <Button
-              onClick={() => {
-                setWalletModalOpen(true)
-                setMobileMenuOpen(false)
-              }}
-              className="shimmer-btn bg-primary text-primary-foreground hover:bg-primary/90 rounded-full"
-            >
-              <Wallet className="mr-2 w-4 h-4" />
-              Connect Wallet
+            <Button variant="ghost" className="justify-start text-muted-foreground hover:text-foreground">
+              Explore
             </Button>
+            <div onClick={() => setMobileMenuOpen(false)}>
+              <ConnectButton className="w-full" />
+            </div>
           </div>
         </motion.div>
       )}
-      <WalletConnectModal open={walletModalOpen} onOpenChange={setWalletModalOpen} />
     </motion.header>
   )
 }
